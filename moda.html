@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Product | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;padding-bottom:80px;}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;padding:0 14px;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.back{font-size:22px;color:#282c3f;text-decoration:none;line-height:1;}
+.logo{height:24px;}
+.brand-title{font-size:15px;font-weight:700;color:#282c3f;flex:1;}
+.hicons{display:flex;gap:18px;align-items:center;}
+.hicons a{text-decoration:none;position:relative;display:flex;align-items:center;}
+.badge{position:absolute;top:-7px;right:-7px;background:#ff3f6c;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;}
+
+.carousel{margin-top:56px;position:relative;width:100%;overflow:hidden;background:#f8f8f8;}
+.carousel-track{display:flex;transition:transform 0.3s ease;}
+.carousel-slide{min-width:100%;aspect-ratio:1/1;}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+
+.dots{display:flex;justify-content:center;gap:6px;padding:8px 0;background:#fff;}
+.dot{width:6px;height:6px;border-radius:50%;background:#ddd;cursor:pointer;transition:all 0.2s;}
+.dot.active{background:#282c3f;width:18px;border-radius:3px;}
+
+.carousel-bottom{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border-bottom:1px solid #f0f0f0;}
+.view-similar{display:flex;align-items:center;gap:6px;font-size:13px;color:#282c3f;border:1px solid #ddd;padding:6px 12px;border-radius:6px;cursor:pointer;}
+.prod-rating{display:flex;align-items:center;gap:5px;background:#f0f0f0;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600;color:#282c3f;}
+
+.product-info{padding:14px 14px 0;}
+.name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.prod-brand{font-size:15px;font-weight:700;color:#282c3f;}
+.prod-name{font-size:13px;color:#535665;margin-top:2px;line-height:1.4;}
+.heart-btn{background:none;border:1px solid #ddd;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0;transition:border-color 0.2s;}
+.heart-btn.active{border-color:#ff3f6c;}
+.heart-btn.active svg path{fill:#ff3f6c;stroke:#ff3f6c;}
+
+.price-section{padding:12px 14px;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;}
+.price-main{font-size:22px;font-weight:700;color:#282c3f;}
+.price-original{font-size:14px;color:#94969f;text-decoration:line-through;margin-left:8px;}
+.price-off{font-size:14px;color:#ff905a;font-weight:600;margin-left:4px;}
+.seller{font-size:12px;color:#535665;margin-top:4px;}
+.seller span{color:#ff3f6c;}
+
+.offers-section{padding:14px;border-bottom:1px solid #f0f0f0;}
+.offer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.offer-row:last-child{margin-bottom:0;}
+.offer-text{font-size:13px;color:#282c3f;}
+.offer-text b{font-weight:700;}
+.offer-text span{color:#535665;font-size:12px;}
+
+.size-section{padding:14px;border-bottom:1px solid #f0f0f0;}
+.size-label{font-size:14px;font-weight:600;color:#282c3f;margin-bottom:12px;}
+.size-btn{display:inline-block;padding:10px 24px;background:#282c3f;color:#fff;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;}
+
+.sticky-btns{position:fixed;bottom:0;left:0;right:0;display:flex;z-index:100;}
+.btn-bag{flex:1;padding:18px;background:#ff3f6c;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-buy{flex:1;padding:18px;background:#fff;color:#ff3f6c;border:none;border-top:2px solid #ff3f6c;font-size:15px;font-weight:700;cursor:pointer;}
+
+.delivery-section{padding:14px;border-bottom:1px solid #f0f0f0;}
+.delivery-title{font-size:14px;font-weight:600;color:#282c3f;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.pin-input{display:flex;align-items:center;border:1px solid #ddd;border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.pin-input input{flex:1;padding:12px;border:none;outline:none;font-size:14px;color:#282c3f;}
+.pin-input input::placeholder{color:#ff3f6c;}
+.pin-check-btn{padding:12px 16px;background:none;border:none;color:#ff3f6c;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;}
+.delivery-msg{background:#e8f5e9;border-radius:8px;padding:10px 12px;font-size:13px;color:#2e7d32;font-weight:600;display:none;margin-bottom:8px;}
+.delivery-feature{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;color:#282c3f;}
+.delivery-feature b{font-weight:600;}
+
+.details-section{padding:14px;border-bottom:1px solid #f0f0f0;}
+.section-title{font-size:14px;font-weight:700;color:#282c3f;margin-bottom:12px;}
+.details-list{list-style:disc;padding-left:20px;}
+.details-list li{font-size:13px;color:#282c3f;margin-bottom:8px;line-height:1.5;}
+
+.specs-section{padding:14px;}
+.spec-row{display:flex;padding:8px 0;border-bottom:1px solid #f8f8f8;}
+.spec-key{font-size:13px;color:#535665;width:45%;}
+.spec-val{font-size:13px;color:#282c3f;font-weight:500;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="products.html">&#8592;</a>
+  <img class="logo" src="https://cdn.freelogovectors.net/wp-content/uploads/2021/02/myntra-logo-freelogovectors.net_.png" alt="Myntra"/>
+  <span class="brand-title" id="headerBrand"></span>
+  <div class="hicons">
+    <a href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </a>
+    <a href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </a>
+    <a href="bag.html">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="badge" id="bagCount">0</span>
+    </a>
+  </div>
+</div>
+
+<div class="carousel">
+  <div class="carousel-track" id="carouselTrack"></div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="carousel-bottom">
+  <div class="view-similar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    View Similar
+  </div>
+  <div class="prod-rating">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="#ffc107" stroke="#ffc107" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span id="ratingNum">4.3</span> | <span id="ratingCount">8.4k</span>
+  </div>
+</div>
+
+<div class="product-info">
+  <div class="name-row">
+    <div>
+      <div class="prod-brand" id="prodBrand"></div>
+      <div class="prod-name" id="prodName"></div>
+    </div>
+    <button class="heart-btn" id="heartBtn" onclick="toggleHeart()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="price-section">
+  <span class="price-main" id="priceMain"></span>
+  <span class="price-original" id="priceOriginal"></span>
+  <span class="price-off" id="priceOff"></span>
+  <div class="seller">Seller: <span id="sellerName"></span></div>
+</div>
+
+<div class="offers-section">
+  <div class="offer-row">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+    <div class="offer-text"><b>Extra 10% off</b> <span>with coupon MYNTRA400</span></div>
+  </div>
+  <div class="offer-row">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div class="offer-text"><b>EMI</b> <span>starting from &#8377;149/month</span></div>
+  </div>
+</div>
+
+<div class="size-section">
+  <div class="size-label">Size: Onesize</div>
+  <button class="size-btn">Onesize</button>
+</div>
+
+<div class="sticky-btns">
+  <button class="btn-bag" onclick="addToBag()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    ADD TO BAG
+  </button>
+  <button class="btn-buy" onclick="buyNow()">BUY NOW &#8594;</button>
+</div>
+
+<div class="delivery-section">
+  <div class="delivery-title">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    Check Delivery
+  </div>
+  <div class="pin-input">
+    <input type="number" placeholder="Enter PIN Code" id="pinInput"/>
+    <button class="pin-check-btn" onclick="checkDelivery()">CHECK</button>
+  </div>
+  <div class="delivery-msg" id="deliveryMsg"></div>
+  <div class="delivery-feature">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+    <div><b>Express delivery</b> might be available</div>
+  </div>
+  <div class="delivery-feature">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <div><b>Pay on delivery</b> might be available</div>
+  </div>
+</div>
+
+<div class="details-section">
+  <div class="section-title">Product Details</div>
+  <ul class="details-list" id="detailsList"></ul>
+</div>
+
+<div class="specs-section">
+  <div class="section-title">Specifications</div>
+  <div id="specsContainer"></div>
+</div>
+
+<script>
+let pro = JSON.parse(localStorage.getItem("clickedProduct"));
+if (!pro) window.location.href = "products.html";
+
+document.getElementById("bagCount").textContent = (JSON.parse(localStorage.getItem("bag")) || []).length;
+document.getElementById("headerBrand").textContent = pro.brand_name;
+document.title = pro.brand_name + " | Myntra";
+
+// Carousel
+const images = pro.imgs || [pro.img, pro.img, pro.img, pro.img];
+const track = document.getElementById("carouselTrack");
+const dotsEl = document.getElementById("dots");
+let current = 0;
+images.forEach((src, i) => {
+  const slide = document.createElement("div"); slide.className = "carousel-slide";
+  slide.innerHTML = `<img src="${src}" alt="${pro.brand_name}"/>`;
+  track.appendChild(slide);
+  const dot = document.createElement("div"); dot.className = "dot" + (i===0?" active":"");
+  dot.onclick = () => goTo(i); dotsEl.appendChild(dot);
+});
+function goTo(idx) {
+  current = idx; track.style.transform = `translateX(-${idx*100}%)`;
+  document.querySelectorAll(".dot").forEach((d,i) => d.classList.toggle("active", i===idx));
+}
+let startX = 0;
+track.addEventListener("touchstart", e => startX = e.touches[0].clientX, {passive:true});
+track.addEventListener("touchend", e => {
+  const diff = startX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { if(diff>0 && current<images.length-1) goTo(current+1); else if(diff<0 && current>0) goTo(current-1); }
+});
+
+// Product info
+document.getElementById("prodBrand").textContent = pro.brand_name;
+document.getElementById("prodName").textContent = pro.T_shirt_name;
+const price = Math.ceil(pro.oldprice * (100-pro.discount) / 100);
+document.getElementById("priceMain").textContent = "₹" + price;
+document.getElementById("priceOriginal").textContent = "₹" + pro.oldprice;
+document.getElementById("priceOff").textContent = "(" + pro.discount + "% OFF)";
+document.getElementById("sellerName").textContent = pro.seller || "Vision Star";
+
+// Rating — use product's own rating (consistent with listing)
+document.getElementById("ratingNum").textContent = pro.rating || 4.3;
+document.getElementById("ratingCount").textContent = pro.ratingCount || "8.4k";
+
+// Delivery check — always shows tomorrow
+function checkDelivery() {
+  const pin = document.getElementById("pinInput").value.trim();
+  if (!pin || pin.length < 6) { alert("Please enter a valid 6-digit PIN code"); return; }
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  const day = tomorrow.toLocaleDateString("en-IN", {weekday:"long", day:"numeric", month:"short"});
+  const msg = document.getElementById("deliveryMsg");
+  msg.textContent = "✓ Delivery by Tomorrow, " + day;
+  msg.style.display = "block";
+}
+
+// Product details
+const desc = pro.description || "";
+const detailsEl = document.getElementById("detailsList");
+desc.split(".").filter(s => s.trim().length > 5).slice(0, 8).forEach(s => {
+  const li = document.createElement("li"); li.textContent = s.trim(); detailsEl.appendChild(li);
+});
+
+// Specs
+const specs = [["Movement",pro.movement],["Display Type",pro.displayType],["Water Resistance",pro.waterResistance],["Warranty",pro.warranty],["Occasion",pro.occasion],["Material",pro.material]];
+const specsEl = document.getElementById("specsContainer");
+specs.forEach(([k,v]) => {
+  if (!v) return;
+  const row = document.createElement("div"); row.className = "spec-row";
+  row.innerHTML = `<div class="spec-key">${k}</div><div class="spec-val">${v}</div>`;
+  specsEl.appendChild(row);
+});
+
+function toggleHeart() { document.getElementById("heartBtn").classList.toggle("active"); }
+
+function addToBag() {
+  let bag = JSON.parse(localStorage.getItem("bag")) || [];
+  if (!bag.find(b => b.T_shirt_name === pro.T_shirt_name)) bag.push(pro);
+  localStorage.setItem("bag", JSON.stringify(bag));
+  localStorage.removeItem("isBuyNow");
+  window.location.href = "bag.html";
+}
+function buyNow() {
+  localStorage.setItem("buyNowProduct", JSON.stringify(pro));
+  localStorage.setItem("isBuyNow", "true");
+  window.location.href = "address.html";
+}
+</script>
+</body>
+</html>

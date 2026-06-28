@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Add Address | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;padding-bottom:90px;}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back{font-size:22px;color:#282c3f;text-decoration:none;cursor:pointer;line-height:1;}
+.header h2{font-size:15px;font-weight:700;color:#282c3f;text-transform:uppercase;}
+.step{font-size:13px;color:#535665;}
+
+.content{margin-top:66px;padding:10px 12px;}
+
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:12px;}
+.card-title{font-size:14px;font-weight:700;color:#282c3f;margin-bottom:14px;}
+
+.field{position:relative;margin-bottom:14px;}
+.field input{width:100%;padding:16px 14px 8px;border:1px solid #ddd;border-radius:8px;font-size:14px;color:#282c3f;background:#fff;outline:none;}
+.field input:focus{border-color:#282c3f;}
+.field label{position:absolute;top:50%;left:14px;transform:translateY(-50%);font-size:14px;color:#94969f;pointer-events:none;transition:all 0.15s;background:#fff;padding:0 2px;}
+.field input:focus ~ label,
+.field input:not(:placeholder-shown) ~ label{top:0px;font-size:11px;color:#535665;transform:none;}
+.hint{font-size:11px;color:#ff7043;margin-top:-10px;margin-bottom:10px;padding:0 4px;}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;gap:10px;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,0.08);}
+.btn-cancel{flex:1;padding:14px;background:#fff;border:1px solid #ddd;border-radius:8px;font-size:14px;font-weight:600;color:#282c3f;cursor:pointer;}
+.btn-save{flex:2;padding:14px;background:#ff3f6c;border:none;border-radius:8px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
+
+.error-msg{color:#ff3f6c;font-size:12px;padding:2px 4px;display:none;margin-top:-10px;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="back" onclick="history.back()">&#8592;</a>
+    <h2>Add Address Details</h2>
+  </div>
+  <span class="step">STEP 2/3</span>
+</div>
+
+<div class="content">
+
+  <div class="card">
+    <div class="card-title">Contact Details</div>
+    <div class="field">
+      <input type="text" id="name" placeholder=" " required/>
+      <label for="name">Name*</label>
+    </div>
+    <div id="nameErr" class="error-msg">Please enter your name</div>
+
+    <div class="field">
+      <input type="tel" id="mobile" placeholder=" " maxlength="10" required/>
+      <label for="mobile">Mobile No*</label>
+    </div>
+    <div id="mobileErr" class="error-msg">Please enter a valid 10-digit mobile number</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Address</div>
+
+    <div class="field">
+      <input type="number" id="pincode" placeholder=" " maxlength="6" required/>
+      <label for="pincode">Pin Code*</label>
+    </div>
+    <div id="pincodeErr" class="error-msg">Please enter a valid 6-digit pin code</div>
+
+    <div class="field">
+      <input type="text" id="house" placeholder=" " required/>
+      <label for="house">House Number / Tower / Block*</label>
+    </div>
+    <div class="hint">*House Number will allow a doorstep delivery</div>
+
+    <div class="field">
+      <input type="text" id="address" placeholder=" " required/>
+      <label for="address">Address (locality, building, street)*</label>
+    </div>
+    <div class="hint">*Please update society/apartment details</div>
+
+    <div class="field">
+      <input type="text" id="locality" placeholder=" " required/>
+      <label for="locality">Locality / Town*</label>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <input type="text" id="city" placeholder=" " required/>
+        <label for="city">City / District*</label>
+      </div>
+      <div class="field">
+        <input type="text" id="state" placeholder=" " required/>
+        <label for="state">State*</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <input type="email" id="email" placeholder=" "/>
+      <label for="email">Email (optional)</label>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-bar">
+  <button class="btn-cancel" onclick="history.back()">Cancel</button>
+  <button class="btn-save" onclick="saveAddress()">Save &amp; Continue</button>
+</div>
+
+<script>
+const saved = JSON.parse(localStorage.getItem("savedAddress") || "{}");
+if (saved.name) {
+  ["name","mobile","pincode","house","address","locality","city","state","email"].forEach(id => {
+    if (saved[id]) document.getElementById(id).value = saved[id];
+  });
+}
+
+function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = "block"; }
+function hideErr(id) { document.getElementById(id).style.display = "none"; }
+
+function saveAddress() {
+  let valid = true;
+  const get = id => document.getElementById(id).value.trim();
+
+  const name = get("name"), mobile = get("mobile"), pincode = get("pincode"),
+        house = get("house"), address = get("address"), locality = get("locality"),
+        city = get("city"), state = get("state"), email = get("email");
+
+  if (!name) { showErr("nameErr", "Please enter your name"); valid = false; } else hideErr("nameErr");
+  if (!mobile || mobile.length !== 10) { showErr("mobileErr", "Please enter a valid 10-digit mobile number"); valid = false; } else hideErr("mobileErr");
+  if (!pincode || pincode.length !== 6) { showErr("pincodeErr", "Please enter a valid 6-digit pin code"); valid = false; } else hideErr("pincodeErr");
+  if (!house || !address || !locality || !city || !state) { alert("Please fill in all required address fields."); valid = false; }
+
+  if (!valid) return;
+  localStorage.setItem("savedAddress", JSON.stringify({name,mobile,pincode,house,address,locality,city,state,email}));
+  window.location.href = "payment.html";
+}
+</script>
+</body>
+</html>

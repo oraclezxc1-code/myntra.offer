@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Watches Online | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;padding-bottom:60px;}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;padding:0 14px;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.back{font-size:22px;color:#282c3f;text-decoration:none;line-height:1;flex-shrink:0;}
+.logo{height:28px;}
+.title{font-size:16px;font-weight:700;color:#282c3f;flex:1;}
+.hicons{display:flex;gap:18px;align-items:center;}
+.hicons a{text-decoration:none;position:relative;display:flex;align-items:center;}
+.badge{position:absolute;top:-7px;right:-7px;background:#ff3f6c;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;}
+
+.subtitle{margin-top:56px;background:#fff;padding:10px 14px;font-size:13px;color:#535665;border-bottom:1px solid #f0f0f0;}
+.subtitle b{color:#282c3f;}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px;}
+
+.card{background:#fff;border-radius:8px;overflow:hidden;text-decoration:none;display:block;}
+.card-img{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#f8f8f8;}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.rating-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);color:#fff;font-size:11px;font-weight:600;padding:3px 7px;border-radius:4px;display:flex;align-items:center;gap:3px;}
+.wishlist-btn{position:absolute;bottom:8px;right:8px;background:#fff;border:none;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);padding:0;}
+.card-info{padding:8px 10px 12px;}
+.card-brand{font-size:13px;font-weight:700;color:#282c3f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-name{font-size:11px;color:#535665;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-price{margin-top:6px;display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.disc{font-size:13px;font-weight:700;color:#282c3f;}
+.orig{font-size:11px;color:#94969f;text-decoration:line-through;}
+.off{font-size:11px;color:#ff905a;font-weight:600;}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #eee;z-index:100;}
+.bottom-bar button{flex:1;padding:14px 0;background:none;border:none;border-right:1px solid #eee;font-size:13px;font-weight:600;color:#282c3f;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.bottom-bar button:last-child{border-right:none;}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;}
+.modal-overlay.active{display:block;}
+.modal{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;padding:20px;z-index:201;max-height:80vh;overflow-y:auto;}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;color:#282c3f;}
+.chip{padding:6px 14px;border:1px solid #ddd;border-radius:20px;font-size:13px;cursor:pointer;color:#282c3f;display:inline-block;margin:4px;}
+.chip.active{border-color:#ff3f6c;color:#ff3f6c;background:#fff5f7;}
+.close-btn{width:100%;padding:14px;background:#ff3f6c;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.clear-btn{width:100%;padding:12px;background:#fff;color:#282c3f;border:1px solid #ddd;border-radius:8px;font-size:14px;cursor:pointer;margin-top:8px;}
+.sort-opt{padding:14px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#282c3f;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.sort-opt.active{color:#ff3f6c;font-weight:600;}
+.radio{width:18px;height:18px;border:2px solid #ddd;border-radius:50%;flex-shrink:0;}
+.sort-opt.active .radio{border-color:#ff3f6c;background:radial-gradient(circle,#ff3f6c 55%,transparent 55%);}
+
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr);}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="home.html">&#8592;</a>
+  <img class="logo" src="https://cdn.freelogovectors.net/wp-content/uploads/2021/02/myntra-logo-freelogovectors.net_.png" alt="Myntra"/>
+  <span class="title">Watches</span>
+  <div class="hicons">
+    <a href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </a>
+    <a href="#">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </a>
+    <a href="bag.html">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="badge" id="bagCount">0</span>
+    </a>
+  </div>
+</div>
+
+<div class="subtitle"><b id="itemCount">30</b> Items</div>
+<div class="grid" id="productGrid"></div>
+
+<div class="bottom-bar">
+  <button onclick="openSort()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+    SORT
+  </button>
+  <button onclick="openFilter()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2.5" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    FILTER
+  </button>
+</div>
+
+<div class="modal-overlay" id="sortOverlay" onclick="closeSort()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Sort By</h3>
+    <div class="sort-opt active" onclick="sortP('popular',this)"><div class="radio"></div>Popularity</div>
+    <div class="sort-opt" onclick="sortP('low',this)"><div class="radio"></div>Price: Low to High</div>
+    <div class="sort-opt" onclick="sortP('high',this)"><div class="radio"></div>Price: High to Low</div>
+    <div class="sort-opt" onclick="sortP('discount',this)"><div class="radio"></div>Best Discount</div>
+    <button class="close-btn" onclick="closeSort()">APPLY</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="filterOverlay" onclick="closeFilter()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Filter by Brand</h3>
+    <div id="brandChips"></div>
+    <button class="close-btn" onclick="applyFilter()">APPLY</button>
+    <button class="clear-btn" onclick="clearFilter()">CLEAR ALL</button>
+  </div>
+</div>
+
+<script src="allfiles.js"></script>
+<script>
+let allP = JSON.parse(localStorage.getItem("products")) || [];
+let filtered = [...allP];
+let selBrands = [];
+
+document.getElementById("bagCount").textContent = (JSON.parse(localStorage.getItem("bag")) || []).length;
+
+const brands = [...new Set(allP.map(p => p.brand_name))];
+const chipsEl = document.getElementById("brandChips");
+brands.forEach(b => {
+  const el = document.createElement("span");
+  el.className = "chip"; el.textContent = b;
+  el.onclick = () => { selBrands.includes(b) ? selBrands.splice(selBrands.indexOf(b),1) : selBrands.push(b); el.classList.toggle("active"); };
+  chipsEl.appendChild(el);
+});
+
+function applyFilter() {
+  filtered = selBrands.length ? allP.filter(p => selBrands.includes(p.brand_name)) : [...allP];
+  render(filtered); closeFilter();
+}
+function clearFilter() {
+  selBrands = []; document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  filtered = [...allP]; render(filtered);
+}
+function sortP(type, el) {
+  document.querySelectorAll(".sort-opt").forEach(o => o.classList.remove("active")); el.classList.add("active");
+  if (type === "low") filtered.sort((a,b) => a.price-b.price);
+  else if (type === "high") filtered.sort((a,b) => b.price-a.price);
+  else if (type === "discount") filtered.sort((a,b) => b.discount-a.discount);
+  else filtered = [...allP].filter(p => !selBrands.length || selBrands.includes(p.brand_name));
+  render(filtered);
+}
+
+function render(products) {
+  const grid = document.getElementById("productGrid");
+  document.getElementById("itemCount").textContent = products.length;
+  grid.innerHTML = "";
+  products.forEach(p => {
+    const price = Math.ceil(p.oldprice * (100-p.discount) / 100);
+    const a = document.createElement("a");
+    a.className = "card"; a.href = "moda.html";
+    a.onclick = () => localStorage.setItem("clickedProduct", JSON.stringify(p));
+    a.innerHTML = `
+      <div class="card-img">
+        <img src="${p.img}" alt="${p.brand_name}" loading="lazy"/>
+        <div class="rating-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="#ffc107" stroke="#ffc107" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          ${p.rating || 4.3} | ${p.ratingCount || "8.4k"}
+        </div>
+        <button class="wishlist-btn" onclick="event.preventDefault();event.stopPropagation();">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="card-info">
+        <div class="card-brand">${p.brand_name}</div>
+        <div class="card-name">${p.T_shirt_name}</div>
+        <div class="card-price">
+          <span class="disc">&#8377;${price}</span>
+          <span class="orig">&#8377;${p.oldprice}</span>
+          <span class="off">${p.discount}% OFF</span>
+        </div>
+      </div>`;
+    grid.appendChild(a);
+  });
+}
+
+function openSort(){ document.getElementById("sortOverlay").classList.add("active"); }
+function closeSort(){ document.getElementById("sortOverlay").classList.remove("active"); }
+function openFilter(){ document.getElementById("filterOverlay").classList.add("active"); }
+function closeFilter(){ document.getElementById("filterOverlay").classList.remove("active"); }
+
+render(allP);
+</script>
+</body>
+</html>

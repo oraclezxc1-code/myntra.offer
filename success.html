@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Order Placed | Myntra</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;min-height:100vh;}
+.header{background:#fff;height:56px;display:flex;align-items:center;padding:0 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.header img{height:28px;}
+.success-banner{background:#fff;padding:28px 20px;text-align:center;margin-bottom:10px;}
+.success-circle{width:72px;height:72px;background:#e8f5e9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.stitle{font-size:20px;font-weight:700;color:#282c3f;margin-bottom:6px;}
+.ssub{font-size:14px;color:#535665;}
+.oid{font-size:13px;color:#535665;margin-top:8px;}
+.oid b{color:#282c3f;}
+.delinfo{background:#fff;padding:16px 14px;margin-bottom:10px;}
+.del-tag{display:inline-flex;align-items:center;gap:8px;background:#e8f5e9;color:#2e7d32;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:12px;}
+.del-date{font-size:20px;font-weight:700;color:#282c3f;margin-bottom:4px;}
+.del-addr{font-size:13px;color:#535665;line-height:1.5;}
+.ocard{background:#fff;padding:16px 14px;margin-bottom:10px;}
+.ctitle{font-size:13px;font-weight:700;color:#535665;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+.oitem{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.oimg{width:70px;height:80px;object-fit:cover;border-radius:6px;}
+.obrand{font-size:14px;font-weight:700;color:#282c3f;}
+.oname{font-size:12px;color:#535665;margin:3px 0;}
+.oprice{font-size:14px;font-weight:700;color:#282c3f;}
+.ostatus{display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;margin-top:4px;}
+.pcard{background:#fff;padding:16px 14px;margin-bottom:10px;}
+.prow{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;color:#282c3f;}
+.prow .g{color:#03a685;}
+.prow .fr{color:#03a685;font-weight:600;}
+.pdiv{border:none;border-top:1px solid #f0f0f0;margin:10px 0;}
+.ptot{display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:#282c3f;}
+.pmcard{background:#fff;padding:16px 14px;margin-bottom:10px;}
+.pmeth{display:flex;align-items:center;gap:10px;font-size:14px;color:#282c3f;}
+.actions{padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.btn-p{width:100%;padding:15px;background:#ff3f6c;border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-s{width:100%;padding:15px;background:#fff;border:1.5px solid #282c3f;border-radius:8px;color:#282c3f;font-size:15px;font-weight:600;cursor:pointer;}
+.confetti{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:200;}
+.cp{position:absolute;border-radius:2px;animation:fall linear forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+</style>
+</head>
+<body>
+<div class="confetti" id="confetti"></div>
+<div class="header">
+  <img src="https://cdn.freelogovectors.net/wp-content/uploads/2021/02/myntra-logo-freelogovectors.net_.png" alt="Myntra"/>
+</div>
+<div class="success-banner">
+  <div class="success-circle">
+    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div class="stitle">Order Placed Successfully!</div>
+  <div class="ssub">Yay! Your order has been confirmed.</div>
+  <div class="oid">Order ID: <b id="orderId">MYN12345678</b></div>
+</div>
+<div class="delinfo">
+  <div class="del-tag">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    Estimated Delivery
+  </div>
+  <div class="del-date">In 5-7 Business Days</div>
+  <div class="del-addr" id="delAddr"></div>
+</div>
+<div class="ocard">
+  <div class="ctitle">Order Details</div>
+  <div class="oitem">
+    <img class="oimg" id="oImg" src="" alt=""/>
+    <div>
+      <div class="obrand" id="oBrand"></div>
+      <div class="oname" id="oName"></div>
+      <div class="oprice" id="oPrice"></div>
+      <div class="ostatus">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Confirmed
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pcard">
+  <div class="ctitle">Price Details</div>
+  <div class="prow"><span>Item Total</span><span id="itot"></span></div>
+  <div class="prow"><span>Discount</span><span class="g" id="idisc"></span></div>
+  <div class="prow"><span>Platform Fee</span><span>&#8377;23</span></div>
+  <div class="prow"><span>Delivery Charges</span><span class="fr">FREE</span></div>
+  <hr class="pdiv"/>
+  <div class="ptot"><span>Amount Paid</span><span id="apaid"></span></div>
+</div>
+<div class="pmcard">
+  <div class="ctitle">Payment</div>
+  <div class="pmeth">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span id="pmeth">UPI</span>
+  </div>
+</div>
+<div class="actions">
+  <button class="btn-p" onclick="window.location.href='products.html'">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Continue Shopping
+  </button>
+  <button class="btn-s" onclick="window.location.href='products.html'">Back to Home</button>
+</div>
+<script>
+const order = JSON.parse(localStorage.getItem("completedOrder") || "{}");
+const pro = order.product || {};
+const addr = order.address || {};
+document.getElementById("orderId").textContent = order.orderId || ("MYN" + Date.now().toString().slice(-8));
+const price = Math.ceil((pro.oldprice||0)*(100-(pro.discount||0))/100);
+const savings = (pro.oldprice||0) - price;
+const total = order.total || (price+23);
+if (addr.name) document.getElementById("delAddr").textContent = addr.name+" — "+addr.house+", "+addr.address+", "+addr.city+" "+addr.pincode;
+document.getElementById("oImg").src = pro.img||"";
+document.getElementById("oBrand").textContent = pro.brand_name||"";
+document.getElementById("oName").textContent = pro.T_shirt_name||"";
+document.getElementById("oPrice").textContent = "₹"+price;
+document.getElementById("itot").textContent = "₹"+(pro.oldprice||0);
+document.getElementById("idisc").textContent = "- ₹"+savings;
+document.getElementById("apaid").textContent = "₹"+total;
+document.getElementById("pmeth").textContent = order.paymentMethod||"UPI";
+localStorage.removeItem("bag"); localStorage.removeItem("isBuyNow");
+localStorage.removeItem("buyNowProduct"); localStorage.removeItem("orderProduct"); localStorage.removeItem("orderTotal");
+const colors=["#ff3f6c","#ff905a","#ffc107","#03a685","#5f259f","#282c3f"];
+const conf=document.getElementById("confetti");
+for(let i=0;i<60;i++){const p=document.createElement("div");p.className="cp";p.style.cssText=`left:${Math.random()*100}%;background:${colors[~~(Math.random()*6)]};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?"50%":"2px"};`;conf.appendChild(p);}
+setTimeout(()=>conf.style.display="none",3500);
+</script>
+</body>
+</html>
