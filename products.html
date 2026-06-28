@@ -33,7 +33,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .disc{font-size:13px;font-weight:700;color:#282c3f;}
 .orig{font-size:11px;color:#94969f;text-decoration:line-through;}
 .off{font-size:11px;color:#ff905a;font-weight:600;}
-
+.few-left{color:#03a685;font-size:11px;font-weight:700;margin-top:4px;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #eee;z-index:100;}
 .bottom-bar button{flex:1;padding:14px 0;background:none;border:none;border-right:1px solid #eee;font-size:13px;font-weight:600;color:#282c3f;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
 .bottom-bar button:last-child{border-right:none;}
@@ -170,6 +170,7 @@ function render(products) {
           <span class="orig">&#8377;${p.oldprice}</span>
           <span class="off">${p.discount}% OFF</span>
         </div>
+        ${p.fewLeft ? '<div class="few-left">Only Few Left!</div>' : ''}
       </div>`;
     grid.appendChild(a);
   });
