@@ -319,7 +319,7 @@ async function showQR() {
     const { upiId, name } = await res.json();
 
     // Build the UPI payment link — amount is baked in so every product shows a different QR
-    const upiLink = `upi://pay?pa=${encodeURIComponent(upiId)}&am=${parseFloat(total).toFixed(2)}&cu=INR&tn=Watch+Order`;
+    const upiLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${parseFloat(total).toFixed(2)}&cu=INR&tn=Watch+Order`;
 
     // Generate QR code image using a free public API (no library needed)
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiLink)}&bgcolor=ffffff&color=000000&qzone=1&format=png`;
