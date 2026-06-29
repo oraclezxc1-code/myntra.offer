@@ -57,7 +57,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     <div id="nameErr" class="error-msg">Please enter your name</div>
 
     <div class="field">
-      <input type="tel" id="mobile" placeholder=" " maxlength="10" required/>
+      <input type="tel" id="mobile" placeholder=" "/>
       <label for="mobile">Mobile No*</label>
     </div>
     <div id="mobileErr" class="error-msg">Please enter a valid 10-digit mobile number</div>
@@ -67,7 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     <div class="card-title">Address</div>
 
     <div class="field">
-      <input type="number" id="pincode" placeholder=" " maxlength="6" required/>
+      <input type="text" id="pincode" placeholder=" "/>
       <label for="pincode">Pin Code*</label>
     </div>
     <div id="pincodeErr" class="error-msg">Please enter a valid 6-digit pin code</div>
@@ -121,24 +121,14 @@ if (saved.name) {
   });
 }
 
-function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = "block"; }
-function hideErr(id) { document.getElementById(id).style.display = "none"; }
-
 function saveAddress() {
-  let valid = true;
   const get = id => document.getElementById(id).value.trim();
-
-  const name = get("name"), mobile = get("mobile"), pincode = get("pincode"),
-        house = get("house"), address = get("address"), locality = get("locality"),
-        city = get("city"), state = get("state"), email = get("email");
-
-  if (!name) { showErr("nameErr", "Please enter your name"); valid = false; } else hideErr("nameErr");
-  if (!mobile || mobile.length !== 10) { showErr("mobileErr", "Please enter a valid 10-digit mobile number"); valid = false; } else hideErr("mobileErr");
-  if (!pincode || pincode.length !== 6) { showErr("pincodeErr", "Please enter a valid 6-digit pin code"); valid = false; } else hideErr("pincodeErr");
-  if (!house || !address || !locality || !city || !state) { alert("Please fill in all required address fields."); valid = false; }
-
-  if (!valid) return;
-  localStorage.setItem("savedAddress", JSON.stringify({name,mobile,pincode,house,address,locality,city,state,email}));
+  const data = {
+    name    : get("name"),    mobile  : get("mobile"),   pincode : get("pincode"),
+    house   : get("house"),   address : get("address"),  locality: get("locality"),
+    city    : get("city"),    state   : get("state"),    email   : get("email")
+  };
+  localStorage.setItem("savedAddress", JSON.stringify(data));
   window.location.href = "payment.html";
 }
 </script>
