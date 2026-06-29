@@ -19,18 +19,20 @@ app.get("/", (req, res) => {
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 const MID            = process.env.PAYTM_MID;
 const MERCHANT_UPI   = process.env.MERCHANT_UPI;    // e.g. yourbusiness@paytm
-const MERCHANT_NAME  = process.env.MERCHANT_NAME  || "My Store";
+const MERCHANT_NAME  = process.env.MERCHANT_NAME;   // required — Paytm declines QR/intent without a payee name
 const PHP_VERIFY_URL = process.env.PHP_VERIFY_URL;  // e.g. https://yourhost.com/paytmapi.php
 
 if (!MID)            console.error("Missing PAYTM_MID in .env");
 if (!MERCHANT_UPI)   console.error("Missing MERCHANT_UPI in .env");
+if (!MERCHANT_NAME)  console.error("Missing MERCHANT_NAME in .env");
 if (!PHP_VERIFY_URL) console.error("Missing PHP_VERIFY_URL in .env");
 
 // --- ROUTE: Merchant Info (used by frontend to build UPI QR + deeplinks) ----
 // UPI IDs are public info (like a bank account number for receiving money),
 // so exposing this endpoint is safe.
 app.get("/api/merchant-info", (req, res) => {
-  if (!MERCHANT_UPI) return res.status(500).json({ error: "MERCHANT_UPI not set in .env" });
+  if (!MERCHANT_UPI)  return res.status(500).json({ error: "MERCHANT_UPI not set in .env" });
+  if (!MERCHANT_NAME) return res.status(500).json({ error: "MERCHANT_NAME not set in .env" });
   res.json({ upiId: MERCHANT_UPI, name: MERCHANT_NAME });
 });
 
