@@ -92,6 +92,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .qr-apps img{width:34px;height:34px;object-fit:contain;border-radius:8px;border:1px solid #f0f0f0;}
 .qr-paid-btn{width:100%;padding:16px;background:#282c3f;border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
 .qr-loading{font-size:13px;color:#94969f;margin:20px 0;}
+.qr-timer-label{font-size:11px;color:#94969f;margin-bottom:4px;}
+.qr-timer{font-size:22px;font-weight:700;color:#ff3f6c;margin-bottom:16px;}
 
 /* Price breakdown (same as bag.html) */
 .psec{padding:14px;border-top:1px solid #f0f0f0;}
@@ -240,6 +242,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     <div class="qr-sub">Scan with any UPI app to pay</div>
     <div class="qr-amount-label">Amount to Pay</div>
     <div class="qr-amount">&#8377;<span id="qrAmt"></span></div>
+	  
     <div class="qr-img-wrap">
       <img id="qrImage" src="" alt="UPI QR Code"/>
     </div>
@@ -311,6 +314,7 @@ async function showQR() {
   document.getElementById("qrUpiId").textContent = "Loading...";
   document.getElementById("qrImage").src = "";
   document.getElementById("qrModal").classList.add("show");
+  startQRTimer();
 
   try {
     // Get merchant UPI ID from backend (it's stored in your .env)
@@ -333,7 +337,32 @@ async function showQR() {
   }
 }
 
+let qrCountdown = null;
+
+function startQRTimer() {
+  let seconds = 599;
+  const el = document.getElementById("qrTimer");
+  el.style.color = "#ff3f6c";
+  qrCountdown = setInterval(() => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    el.textContent = m + ":" + s.toString().padStart(2, "0");
+    if (seconds <= 60) el.style.color = "#e74c3c";
+    if (seconds <= 0) {
+      clearInterval(qrCountdown);
+      el.textContent = "0:00";
+      el.style.color = "#94969f";
+      closeQR();
+      alert("QR expired. Please open Scan & Pay again.");
+    }
+    seconds--;
+  }, 1000);
+}
+
 function closeQR() {
+  clearInterval(qrCountdown);
+  qrCountdown = null;
+  document.getElementById("qrTimer").textContent = "9:59";
   document.getElementById("qrModal").classList.remove("show");
 }
 
