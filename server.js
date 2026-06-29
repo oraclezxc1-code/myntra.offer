@@ -65,7 +65,7 @@ app.get("/api/verify-payment", async (req, res) => {
 });
 
 // ─── START ─────────────────────────────────────────────────────────────────
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`\n🚀  Server running → http://localhost:${PORT}`);
   console.log(`    Paytm MID : ${MID || "NOT SET"}`);
