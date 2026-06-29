@@ -98,7 +98,7 @@ app.post("/api/create-order", async (req, res) => {
 
   } catch (err) {
     console.error("[create-order]", err.message);
-    res.status(500).json({ error: "UPI servers are facing heavy traffic. Please try QR option." });
+    res.status(500).json({ error: "UPI servers are facing heavy traffic. Please try QR "Scan & Pay" option." });
   }
 });
 
