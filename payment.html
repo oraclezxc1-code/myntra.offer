@@ -156,21 +156,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
     <!-- UPI App Buttons (user will replace icon boxes with real logos) -->
     <div class="upi-apps">
-     <button class="upi-app-btn" onclick="triggerUPI('gpay')" id="btnGpay">
-      <img src="https://i.postimg.cc/BQQV2Mxq/Google-Pay-Logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
-      GPay
-     </button>
-     <button class="upi-app-btn" onclick="triggerUPI('phonepe')" id="btnPhonepe">
-      <img src="https://i.postimg.cc/Bnj7VbYM/Phone-Pe-Logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
-      PhonePe
-     </button>
      <button class="upi-app-btn" onclick="triggerUPI('paytm')" id="btnPaytm">
       <img src="https://i.postimg.cc/jjNgR9rS/Paytm-logo.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
       Paytm
      </button>
-     <button class="upi-app-btn" onclick="triggerUPI('bhim')" id="btnBhim">
-      <img src="https://i.postimg.cc/66zH6nFb/BHIM-logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
-       BHIM
+     <button class="upi-app-btn" onclick="triggerUPI('phonepe')" id="btnPhonepe">
+      <img src="https://i.postimg.cc/Bnj7VbYM/Phone-Pe-Logo-svg.png" style="width:40px;height:40px;border-radius:10px;object-fit:contain;"/>
+      PhonePe
      </button>
 	 <button class="upi-app-btn" onclick="showQR()">
       <div class="icon-box" style="background:#282c3f;">
@@ -267,8 +259,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 <div class="processing" id="processing">
   <div class="spinner"></div>
-  <p style="font-size:16px;font-weight:600;">Processing Payment...</p>
-  <p style="font-size:13px;opacity:0.8;">Please do not press back</p>
+  <p style="font-size:16px;font-weight:600;">Confirming your payment…</p>
+  <p style="font-size:13px;opacity:0.8;">Complete the payment in your UPI app, then return here.</p>
+  <button onclick="cancelVerify()" style="margin-top:10px;background:none;border:1px solid rgba(255,255,255,0.6);color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;cursor:pointer;">Cancel</button>
 </div>
 
 <script>
@@ -293,16 +286,46 @@ if (addr.name) {
 }
 
 // ─── State ────────────────────────────────────────────────────────────────
-let paytmJsLoaded = false;
-let selectedApp   = null;
+let selectedApp = null;
 
-// ─── Highlight the tapped UPI button ─────────────────────────────────────
-function triggerUPI(app) {
+// ─── Open the chosen UPI app via deeplink, then verify via backend ────────
+// Flow: build a UPI intent (merchant UPI + amount + order ref) → open the
+// app → poll our backend, which proxies to the PHP getTxnStatus script.
+async function triggerUPI(app) {
   selectedApp = app;
   document.querySelectorAll(".upi-app-btn").forEach(b => b.classList.remove("active"));
   const btn = document.getElementById("btn" + app.charAt(0).toUpperCase() + app.slice(1));
   if (btn) btn.classList.add("active");
-  openCheckout();
+
+  try {
+    // Merchant UPI details come from the backend (.env)
+    const res = await fetch("/api/merchant-info");
+    if (!res.ok) throw new Error("Could not fetch merchant info");
+    const { upiId, name } = await res.json();
+
+    // One order reference per attempt — used in the UPI intent (tr=) and
+    // when we ask the backend to verify the transaction.
+    const orderId = "ORD" + Date.now();
+
+    const params =
+      `pa=${encodeURIComponent(upiId)}` +
+      `&pn=${encodeURIComponent(name)}` +
+      `&am=${parseFloat(total).toFixed(2)}` +
+      `&cu=INR` +
+      `&tr=${encodeURIComponent(orderId)}` +
+      `&tn=${encodeURIComponent("Watch Order")}`;
+
+    // App-specific deeplink so the right app opens directly
+    const scheme = app === "phonepe" ? "phonepe://pay?" : "paytmmp://pay?";
+    window.location.href = scheme + params;
+
+    // Verify once the user returns from the UPI app
+    verifyPayment(orderId);
+
+  } catch (err) {
+    console.error("[triggerUPI]", err);
+    alert("Could not start payment: " + err.message);
+  }
 }
 
 // Scan & Pay — fetches merchant UPI from backend, generates QR with exact amount
@@ -385,143 +408,61 @@ function handleQRPaid() {
   setTimeout(() => window.location.href = "success.html", 1500);
 }
 
-// PAY NOW button at bottom
+// Bottom PAY NOW button — payment is driven by the UPI app buttons above
 function makePayment() {
-  openCheckout();
+  alert("Please choose Paytm or PhonePe above to pay.");
 }
 
-// ─── Main: create order → load Paytm JS → open checkout modal ────────────
-async function openCheckout() {
-  const payBtn = document.getElementById("payBtn");
-  payBtn.textContent = "Setting up payment...";
-  payBtn.disabled = true;
+// ─── Poll backend (which proxies to the PHP getTxnStatus script) ──────────
+let verifyPoll = null;
 
-  try {
-    // Step 1 — Ask our backend to create an order with Paytm
-    const res = await fetch("/api/create-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount    : total,
-        customerId: addr.mobile || "GUEST_" + Date.now()
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Server error");
-    }
-
-    const { orderId, txnToken, mid, amount, paytmHost } = await res.json();
-
-    // Step 2 — Load Paytm CheckoutJS once (cached for subsequent clicks)
-    if (!paytmJsLoaded) {
-      await new Promise((resolve, reject) => {
-        const s   = document.createElement("script");
-        s.src     = `${paytmHost}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
-        s.crossOrigin = "anonymous";
-        s.onload  = () => { paytmJsLoaded = true; resolve(); };
-        s.onerror = () => reject(new Error("Failed to load Paytm checkout. Check your MID."));
-        document.head.appendChild(s);
-      });
-    }
-
-    // Step 3 — Configure and open the Paytm payment modal
-    //   The modal shows UPI apps installed on the device (GPay, PhonePe, etc.),
-    //   cards, net banking — Paytm handles everything internally.
-    const config = {
-      root    : "",
-      flow    : "DEFAULT",
-      merchant: { mid, redirect: false },
-      data    : {
-        orderId,
-        token    : txnToken,
-        tokenType: "TXN_TOKEN",
-        amount   : String(amount),
-      },
-      handler: {
-        // Fires when Paytm modal reports a result (success/failure/pending)
-        transactionStatus(payStatus) {
-          if (payStatus.STATUS === "TXN_SUCCESS" || payStatus.STATUS === "PENDING") {
-            // PENDING can still become success when webhook arrives — poll anyway
-            pollPaymentStatus(orderId);
-          } else {
-            resetPayBtn();
-            alert("Payment was not completed. Please try again.");
-          }
-        },
-        // Fires when user closes the modal without paying
-        notifyMerchant(eventName) {
-          if (eventName === "APP_CLOSED") resetPayBtn();
-        }
-      }
-    };
-
-    window.Paytm.CheckoutJS.init(config)
-      .then(() => window.Paytm.CheckoutJS.invoke())
-      .catch(err => { throw err; });
-
-  } catch (err) {
-    console.error("[checkout]", err);
-    resetPayBtn();
-    alert("Could not start payment: " + err.message);
-  }
-}
-
-// ─── Poll backend until webhook confirms payment ──────────────────────────
-async function pollPaymentStatus(orderId) {
+function verifyPayment(orderId) {
   document.getElementById("processing").classList.add("show");
 
-  const MAX_ATTEMPTS = 12;   // 12 × 2.5s = 30 seconds max wait
+  const MAX_ATTEMPTS = 40;   // 40 × 3s = 2 minutes
   let   attempts     = 0;
+  clearInterval(verifyPoll);
 
-  const poll = setInterval(async () => {
+  verifyPoll = setInterval(async () => {
     attempts++;
     try {
-      const res  = await fetch(`/api/payment-status/${orderId}`);
+      const res  = await fetch(`/api/verify-payment?txn=${encodeURIComponent(orderId)}&amount=${encodeURIComponent(total)}`);
       const data = await res.json();
 
-      if (data.status === "paid") {
-        clearInterval(poll);
-        // Save for success page
+      if (data.success) {
+        clearInterval(verifyPoll);
         const orderData = {
           product      : pro,
           address      : addr,
           total,
-          paymentMethod: "UPI (Paytm Gateway)",
+          paymentMethod: selectedApp === "phonepe" ? "UPI (PhonePe)" : "UPI (Paytm)",
           orderId,
-          txnId        : data.txnId,
+          txnId        : data.txn_id || orderId,
           orderDate    : new Date().toLocaleDateString("en-IN", {day:"numeric",month:"long",year:"numeric"})
         };
         localStorage.setItem("completedOrder", JSON.stringify(orderData));
         window.location.href = "success.html";
 
-      } else if (data.status === "failed") {
-        clearInterval(poll);
-        document.getElementById("processing").classList.remove("show");
-        alert("Payment failed. Please try again.");
-        resetPayBtn();
-
       } else if (attempts >= MAX_ATTEMPTS) {
-        clearInterval(poll);
-        document.getElementById("processing").classList.remove("show");
-        // Webhook may still arrive later — give user the order ID for support
+        clearInterval(verifyPoll);
+        cancelVerify();
+        // getTxnStatus may catch up later — give the user their order ID
         alert(
-          `Payment is being verified.\n\nYour Order ID: ${orderId}\n\n` +
+          `We couldn't confirm your payment yet.\n\nYour Order ID: ${orderId}\n\n` +
           `If money was deducted, it will be refunded within 5-7 business days.`
         );
-        resetPayBtn();
       }
     } catch (e) {
-      console.error("[poll]", e);
+      console.error("[verify]", e);
     }
-  }, 2500);
+  }, 3000);
 }
 
-function resetPayBtn() {
-  const btn = document.getElementById("payBtn");
-  btn.textContent = "PAY NOW →";
-  btn.disabled    = false;
+// User backed out without completing payment
+function cancelVerify() {
+  clearInterval(verifyPoll);
+  verifyPoll = null;
+  document.getElementById("processing").classList.remove("show");
 }
 </script>
 </body>
