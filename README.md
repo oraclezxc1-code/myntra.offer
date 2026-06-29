@@ -1,1 +1,1 @@
-# myntra.offer
+# myntra offer page
