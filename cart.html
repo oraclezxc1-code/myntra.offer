@@ -57,7 +57,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 </head>
 <body>
 <div class="header">
-  <div class="hl"><a class="back" href="moda.html">&#8592;</a><h2>SHOPPING BAG</h2></div>
+  <div class="hl"><a class="back" href="item">&#8592;</a><h2>SHOPPING BAG</h2></div>
   <span class="step">STEP 1/3</span>
 </div>
 <div class="dbar"><span>Check delivery time &amp; services</span><a href="#">ENTER PIN CODE</a></div>
@@ -139,7 +139,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 <script>
 let isBN = localStorage.getItem("isBuyNow") === "true";
 let pro = isBN ? JSON.parse(localStorage.getItem("buyNowProduct")) : (() => { let b = JSON.parse(localStorage.getItem("bag"))||[]; return b[b.length-1]; })();
-if (!pro) window.location.href = "products.html";
+if (!pro) window.location.href = "watches-offer";
 const price = Math.ceil(pro.oldprice*(100-pro.discount)/100);
 const savings = pro.oldprice - price;
 const total = price + 23;
@@ -157,14 +157,14 @@ document.getElementById("totAmt").textContent = "₹" + total;
 function placeOrder() {
   localStorage.setItem("orderProduct", JSON.stringify(pro));
   localStorage.setItem("orderTotal", total);
-  window.location.href = "address.html";
+  window.location.href = "address";
 }
 function removeItem() {
   if (confirm("Remove this item from bag?")) {
     localStorage.removeItem("bag");
     localStorage.removeItem("isBuyNow");
     localStorage.removeItem("buyNowProduct");
-    window.location.href = "products.html";
+    window.location.href = "watches-offer";
   }
 }
 </script>

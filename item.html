@@ -83,7 +83,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 <body>
 
 <div class="header">
-  <a class="back" href="products.html">&#8592;</a>
+  <a class="back" href="watches-offer">&#8592;</a>
   <img class="logo" src="https://cdn.freelogovectors.net/wp-content/uploads/2021/02/myntra-logo-freelogovectors.net_.png" alt="Myntra"/>
   <span class="brand-title" id="headerBrand"></span>
   <div class="hicons">
@@ -93,7 +93,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     <a href="#">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </a>
-    <a href="bag.html">
+    <a href="cart">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="badge" id="bagCount">0</span>
     </a>
@@ -186,7 +186,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 <script>
 let pro = JSON.parse(localStorage.getItem("clickedProduct"));
-if (!pro) window.location.href = "products.html";
+if (!pro) window.location.href = "watches-offer";
 
 document.getElementById("bagCount").textContent = (JSON.parse(localStorage.getItem("bag")) || []).length;
 document.getElementById("headerBrand").textContent = pro.brand_name;
@@ -263,12 +263,12 @@ function addToBag() {
   if (!bag.find(b => b.T_shirt_name === pro.T_shirt_name)) bag.push(pro);
   localStorage.setItem("bag", JSON.stringify(bag));
   localStorage.removeItem("isBuyNow");
-  window.location.href = "bag.html";
+  window.location.href = "cart";
 }
 function buyNow() {
   localStorage.setItem("buyNowProduct", JSON.stringify(pro));
   localStorage.setItem("isBuyNow", "true");
-  window.location.href = "address.html";
+  window.location.href = "address";
 }
 </script>
 </body>

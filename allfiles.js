@@ -750,7 +750,7 @@ function appendProduct(el) {
     div.addEventListener("click", function () {
         localStorage.setItem("clickedProduct", JSON.stringify(el))
     })
-    div.innerHTML = `<a class="each-product" href="moda.html">
+    div.innerHTML = `<a class="each-product" href="item">
               <div>
                 <img src="${el.img}" alt="${el.brand_name} ${el.T_shirt_name}" />
                 <div class="brand">${el.brand_name}</div>

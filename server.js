@@ -9,11 +9,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Serve all your HTML/JS/CSS files from the same folder
-app.use(express.static(path.join(__dirname)));
-// Redirect root → products page
+// Serve all your HTML/JS/CSS files from the same folder.
+// { extensions: ["html"] } lets "/watches-offer" resolve to "watches-offer.html"
+app.use(express.static(path.join(__dirname), { extensions: ["html"] }));
+// Redirect root → listing page
 app.get("/", (req, res) => {
-  res.redirect("/products.html");
+  res.redirect("/watches-offer");
 });
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────
