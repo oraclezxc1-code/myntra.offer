@@ -147,7 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 </div>
 
 <div class="pbar">
-  <span class="lbl">Total Amount to Pay</span>
+  <span class="amt">Total Amount to Pay</span>
   <span class="amt" id="totalAmt">&#8377;0</span>
 </div>
 
@@ -160,7 +160,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 <div class="psec">
   <div class="prow2"><span>Total MRP</span><span id="totMrp"></span></div>
-  <div class="prow2"><span>MRP After Discount</span><span class="g" id="afterDisc"></span></div>
+  <div class="prow2"><span>Discount on MRP</span><span class="g" id="afterDisc"></span></div>
   <div class="prow2"><span>Platform Fee <span style="color:#ff3f6c;font-size:12px;cursor:pointer;"> Know More</span></span><span>&#8377;23</span></div>
   <div class="prow2"><span>Delivery Charges</span><span class="fr">FREE</span></div>
   <hr class="pdiv"/>
@@ -350,7 +350,7 @@ document.getElementById("oName").textContent  = pro.T_shirt_name || "";
 const price = Math.ceil((pro.oldprice||0)*(100-(pro.discount||0))/100);
 document.getElementById("oPrice").textContent          = "₹" + price;
 document.getElementById("totMrp").textContent          = "₹" + (pro.oldprice || 0);
-document.getElementById("afterDisc").textContent       = "₹" + price;
+document.getElementById("afterDisc").textContent       = "- ₹" + ((pro.oldprice || 0) - price);
 document.getElementById("totAmtBreakdown").textContent = "₹" + total;
 
 if (addr.name) {

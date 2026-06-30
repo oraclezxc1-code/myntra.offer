@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Add Address | Myntra</title>
+<title>Select Address | Myntra</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f0f0;padding-bottom:90px;}
+button,input,select,textarea{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
 
 .header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
 .header-left{display:flex;align-items:center;gap:10px;}
@@ -14,6 +15,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .header h2{font-size:15px;font-weight:700;color:#282c3f;text-transform:uppercase;}
 .step{font-size:13px;color:#535665;}
 
+/* ── Select view ── */
+#selectView{margin-top:56px;}
+.add-new-wrap{padding:14px 12px;background:#fff;}
+.add-new-btn{width:100%;padding:16px;background:#fff;border:1px solid #d4d5d9;border-radius:8px;font-size:14px;font-weight:700;color:#282c3f;letter-spacing:0.5px;cursor:pointer;text-transform:uppercase;}
+.sec-label{background:#f5f5f6;padding:12px 14px;font-size:13px;font-weight:700;color:#94969f;letter-spacing:0.3px;text-transform:uppercase;}
+.addr-card{background:#fff;padding:16px 14px;border-bottom:1px solid #f0f0f0;}
+.addr-top{display:flex;align-items:center;gap:12px;}
+.addr-radio{width:20px;height:20px;border:2px solid #c4c4c4;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.addr-radio.sel{border-color:#ff3f6c;}
+.addr-radio.sel::after{content:'';width:10px;height:10px;background:#ff3f6c;border-radius:50%;}
+.addr-name{font-size:15px;font-weight:700;color:#282c3f;display:flex;align-items:center;gap:8px;}
+.addr-tag{font-size:11px;font-weight:700;color:#03a685;border:1px solid #03a685;border-radius:4px;padding:2px 8px;letter-spacing:0.5px;}
+.addr-body{padding-left:32px;margin-top:8px;}
+.addr-text{font-size:14px;color:#535665;line-height:1.55;}
+.addr-mob{font-size:14px;color:#535665;margin-top:10px;}
+.addr-mob b{color:#282c3f;}
+.addr-actions{display:flex;gap:12px;margin-top:14px;}
+.addr-btn{padding:10px 22px;background:#fff;border:1px solid #d4d5d9;border-radius:6px;font-size:13px;font-weight:600;color:#282c3f;cursor:pointer;text-transform:uppercase;letter-spacing:0.3px;}
+
+.confirm-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,0.08);}
+.btn-confirm{width:100%;padding:16px;background:#ff3f6c;border:none;border-radius:8px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:0.5px;}
+
+/* ── Form view ── */
 .content{margin-top:66px;padding:10px 12px;}
 
 .card{background:#fff;border-radius:10px;padding:16px;margin-bottom:12px;}
@@ -32,8 +56,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;gap:10px;padding:12px 14px;box-shadow:0 -2px 8px rgba(0,0,0,0.08);}
 .btn-cancel{flex:1;padding:14px;background:#fff;border:1px solid #ddd;border-radius:8px;font-size:14px;font-weight:600;color:#282c3f;cursor:pointer;}
 .btn-save{flex:2;padding:14px;background:#ff3f6c;border:none;border-radius:8px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
-
-.error-msg{color:#ff3f6c;font-size:12px;padding:2px 4px;display:none;margin-top:-10px;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -41,96 +63,230 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 <div class="header">
   <div class="header-left">
     <a class="back" onclick="history.back()">&#8592;</a>
-    <h2>Add Address Details</h2>
+    <h2 id="hdrTitle">Select Address</h2>
   </div>
   <span class="step">STEP 2/3</span>
 </div>
 
-<div class="content">
-
-  <div class="card">
-    <div class="card-title">Contact Details</div>
-    <div class="field">
-      <input type="text" id="name" placeholder=" " required/>
-      <label for="name">Name*</label>
-    </div>
-    <div id="nameErr" class="error-msg">Please enter your name</div>
-
-    <div class="field">
-      <input type="tel" id="mobile" placeholder=" "/>
-      <label for="mobile">Mobile No*</label>
-    </div>
-    <div id="mobileErr" class="error-msg">Please enter a valid 10-digit mobile number</div>
+<!-- ── SELECT VIEW (saved addresses) ── -->
+<div id="selectView" style="display:none;">
+  <div class="add-new-wrap">
+    <button class="add-new-btn" onclick="showForm(-1)">Add New Address</button>
   </div>
-
-  <div class="card">
-    <div class="card-title">Address</div>
-
-    <div class="field">
-      <input type="text" id="pincode" placeholder=" "/>
-      <label for="pincode">Pin Code*</label>
-    </div>
-    <div id="pincodeErr" class="error-msg">Please enter a valid 6-digit pin code</div>
-
-    <div class="field">
-      <input type="text" id="house" placeholder=" " required/>
-      <label for="house">House Number / Tower / Block*</label>
-    </div>
-    <div class="hint">*House Number will allow a doorstep delivery</div>
-
-    <div class="field">
-      <input type="text" id="address" placeholder=" " required/>
-      <label for="address">Address (locality, building, street)*</label>
-    </div>
-    <div class="hint">*Please update society/apartment details</div>
-
-    <div class="field">
-      <input type="text" id="locality" placeholder=" " required/>
-      <label for="locality">Locality / Town*</label>
-    </div>
-
-    <div class="row">
-      <div class="field">
-        <input type="text" id="city" placeholder=" " required/>
-        <label for="city">City / District*</label>
-      </div>
-      <div class="field">
-        <input type="text" id="state" placeholder=" " required/>
-        <label for="state">State*</label>
-      </div>
-    </div>
-
-    <div class="field">
-      <input type="email" id="email" placeholder=" "/>
-      <label for="email">Email (optional)</label>
-    </div>
-  </div>
-
+  <div id="addrList"></div>
 </div>
 
-<div class="bottom-bar">
-  <button class="btn-cancel" onclick="history.back()">Cancel</button>
-  <button class="btn-save" onclick="saveAddress()">Save &amp; Continue</button>
+<div class="confirm-bar" id="confirmBar" style="display:none;">
+  <button class="btn-confirm" onclick="confirmAddr()">CONFIRM</button>
+</div>
+
+<!-- ── FORM VIEW (add / edit) ── -->
+<div id="formView" style="display:none;">
+  <div class="content">
+
+    <div class="card">
+      <div class="card-title">Contact Details</div>
+      <div class="field">
+        <input type="text" id="name" placeholder=" "/>
+        <label for="name">Name*</label>
+      </div>
+      <div class="field">
+        <input type="tel" id="mobile" placeholder=" "/>
+        <label for="mobile">Mobile No*</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Address</div>
+
+      <div class="field">
+        <input type="text" id="pincode" placeholder=" "/>
+        <label for="pincode">Pin Code*</label>
+      </div>
+
+      <div class="field">
+        <input type="text" id="house" placeholder=" "/>
+        <label for="house">House Number / Tower / Block*</label>
+      </div>
+      <div class="hint">*House Number will allow a doorstep delivery</div>
+
+      <div class="field">
+        <input type="text" id="address" placeholder=" "/>
+        <label for="address">Address (locality, building, street)*</label>
+      </div>
+      <div class="hint">*Please update society/apartment details</div>
+
+      <div class="field">
+        <input type="text" id="locality" placeholder=" "/>
+        <label for="locality">Locality / Town*</label>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <input type="text" id="city" placeholder=" "/>
+          <label for="city">City / District*</label>
+        </div>
+        <div class="field">
+          <input type="text" id="state" placeholder=" "/>
+          <label for="state">State*</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <input type="email" id="email" placeholder=" "/>
+        <label for="email">Email (optional)</label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn-cancel" onclick="cancelForm()">Cancel</button>
+    <button class="btn-save" onclick="saveAddress()">Save &amp; Continue</button>
+  </div>
 </div>
 
 <script>
-const saved = JSON.parse(localStorage.getItem("savedAddress") || "{}");
-if (saved.name) {
-  ["name","mobile","pincode","house","address","locality","city","state","email"].forEach(id => {
-    if (saved[id]) document.getElementById(id).value = saved[id];
-  });
+const FIELDS = ["name","mobile","pincode","house","address","locality","city","state","email"];
+function getList() { try { return JSON.parse(localStorage.getItem("savedAddresses") || "[]"); } catch (e) { return []; } }
+function setList(l) { localStorage.setItem("savedAddresses", JSON.stringify(l)); }
+
+let selectedIdx = 0;   // which saved address is selected (the "default")
+let editIdx     = -1;  // form mode: -1 = adding new, >=0 = editing that index
+
+// Migrate a legacy single saved address into the list
+(function(){
+  if (!getList().length) {
+    try { const s = JSON.parse(localStorage.getItem("savedAddress") || "{}"); if (s && s.name) setList([s]); } catch (e) {}
+  }
+})();
+
+function addrCard(a, i) {
+  const div = document.createElement("div");
+  div.className = "addr-card";
+  const parts = [a.house, a.address, a.locality, a.city, a.state].filter(Boolean).join(", ") + (a.pincode ? " " + a.pincode : "");
+  div.innerHTML =
+    '<div class="addr-top">' +
+      '<div class="addr-radio ' + (i === selectedIdx ? 'sel' : '') + '" onclick="selectAddr(' + i + ')"></div>' +
+      '<div class="addr-name">' + (a.name || "Address") + '</div>' +
+    '</div>' +
+    '<div class="addr-body">' +
+      '<div class="addr-text">' + parts + '</div>' +
+      (a.mobile ? '<div class="addr-mob">Mobile: <b>' + a.mobile + '</b></div>' : '') +
+      '<div class="addr-actions">' +
+        '<button class="addr-btn" onclick="removeAddr(' + i + ')">Remove</button>' +
+        '<button class="addr-btn" onclick="showForm(' + i + ')">Edit</button>' +
+      '</div>' +
+    '</div>';
+  return div;
+}
+
+function secLabel(text) {
+  const d = document.createElement("div");
+  d.className = "sec-label";
+  d.textContent = text;
+  return d;
+}
+
+function renderList() {
+  const list = getList();
+  const el = document.getElementById("addrList");
+  el.innerHTML = "";
+  if (!list.length) return;
+  if (selectedIdx >= list.length) selectedIdx = 0;
+  // selected address shown first as the default
+  el.appendChild(secLabel("Default Address"));
+  el.appendChild(addrCard(list[selectedIdx], selectedIdx));
+  const others = list.map((_, i) => i).filter(i => i !== selectedIdx);
+  if (others.length) {
+    el.appendChild(secLabel("Other Addresses"));
+    others.forEach(i => el.appendChild(addrCard(list[i], i)));
+  }
+}
+
+function selectAddr(i) { selectedIdx = i; renderList(); }
+
+function removeAddr(i) {
+  const list = getList();
+  list.splice(i, 1);
+  setList(list);
+  if (selectedIdx >= list.length) selectedIdx = Math.max(0, list.length - 1);
+  if (!list.length) { showForm(-1); return; }
+  renderList();
+}
+
+function confirmAddr() {
+  const a = getList()[selectedIdx];
+  if (!a) { showForm(-1); return; }
+  localStorage.setItem("savedAddress", JSON.stringify(a));
+  window.location.href = "payment";
+}
+
+function showForm(idx) {
+  editIdx = idx;
+  const a = idx >= 0 ? getList()[idx] : null;
+  FIELDS.forEach(id => { document.getElementById(id).value = (a && a[id]) ? a[id] : ""; });
+  document.getElementById("selectView").style.display = "none";
+  document.getElementById("confirmBar").style.display = "none";
+  document.getElementById("formView").style.display = "block";
+  document.getElementById("hdrTitle").textContent = idx >= 0 ? "Edit Address" : "Add New Address";
+  window.scrollTo(0, 0);
+}
+
+function showSelect() {
+  document.getElementById("formView").style.display = "none";
+  document.getElementById("selectView").style.display = "block";
+  document.getElementById("confirmBar").style.display = "block";
+  document.getElementById("hdrTitle").textContent = "Select Address";
+  renderList();
+  window.scrollTo(0, 0);
+}
+
+function cancelForm() {
+  if (getList().length) showSelect();
+  else history.back();
 }
 
 function saveAddress() {
   const get = id => document.getElementById(id).value.trim();
-  const data = {
-    name    : get("name"),    mobile  : get("mobile"),   pincode : get("pincode"),
-    house   : get("house"),   address : get("address"),  locality: get("locality"),
-    city    : get("city"),    state   : get("state"),    email   : get("email")
-  };
+  const data = {};
+  FIELDS.forEach(id => data[id] = get(id));
+
+  const list = getList();
+  if (editIdx >= 0) {
+    list[editIdx] = data;
+    selectedIdx = editIdx;
+    setList(list);
+  } else if (Object.values(data).some(v => v)) {
+    const key = JSON.stringify(data);
+    const existing = list.findIndex(a => JSON.stringify(a) === key);
+    if (existing >= 0) { selectedIdx = existing; }
+    else { list.push(data); selectedIdx = list.length - 1; setList(list); }
+  }
   localStorage.setItem("savedAddress", JSON.stringify(data));
-  window.location.href = "payment";
+  // Return to the select list so the user can review & confirm
+  if (getList().length) showSelect();
+  else window.location.href = "payment";
 }
+
+// Auto-fill City & State from the PIN code (India Post public API)
+document.getElementById("pincode").addEventListener("input", async function () {
+  const pin = this.value.trim();
+  if (!/^\d{6}$/.test(pin)) return;
+  try {
+    const res  = await fetch("https://api.postalpincode.in/pincode/" + pin);
+    const data = await res.json();
+    const po   = data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice[0];
+    if (po) {
+      document.getElementById("city").value  = po.District || "";
+      document.getElementById("state").value = po.State || "";
+    }
+  } catch (e) { /* offline / invalid PIN — leave fields for manual entry */ }
+});
+
+// Initial view: saved addresses → select list, else → blank form
+if (getList().length) showSelect();
+else showForm(-1);
 </script>
 </body>
 </html>
