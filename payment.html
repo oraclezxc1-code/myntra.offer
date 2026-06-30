@@ -26,6 +26,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .couplab{padding:12px 14px;font-size:11px;font-weight:700;color:#535665;letter-spacing:0.5px;background:#f8f8f8;border-bottom:1px solid #f0f0f0;}
 .couprow{padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
 .coupl{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#282c3f;}
+.pay-banner{margin:10px;border-radius:8px;overflow:hidden;aspect-ratio:1280/132;}
+.pay-banner img{width:100%;height:100%;object-fit:cover;display:block;}
 .addrsec{background:#fff;margin:10px 0;padding:14px;}
 .atitle{font-size:13px;font-weight:700;color:#535665;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
 .aname{font-size:14px;font-weight:700;color:#282c3f;}
@@ -153,6 +155,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   <div class="ptot"><span>Total Amount</span><span id="totAmtBreakdown"></span></div>
 </div>
 </div>
+
+<div class="pay-banner"><img id="payBannerImg" src="https://i.postimg.cc/L8msLxXm/5C1B294A-0986-40BA-890B-1DA3618908A9.jpg" alt="Offer"/></div>
+<script>
+(function(){
+  const imgs = [
+    "https://i.postimg.cc/L8msLxXm/5C1B294A-0986-40BA-890B-1DA3618908A9.jpg",
+    "https://i.postimg.cc/P5dqYSxX/FA0B7F10-5293-4A08-A103-E763C42DFBEE.jpg"
+  ];
+  imgs.forEach(s => { const im = new Image(); im.src = s; });
+  const el = document.getElementById("payBannerImg");
+  let i = 0;
+  setInterval(() => { i = (i + 1) % imgs.length; el.src = imgs[i]; }, 1000);
+})();
+</script>
 
 <div class="coupsec">
   <div class="couprow" style="opacity:0.4;pointer-events:none;">
