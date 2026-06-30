@@ -33,6 +33,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .pprice{font-size:15px;font-weight:700;color:#282c3f;}
 .pmrp{font-size:12px;color:#94969f;text-decoration:line-through;}
 .psave{font-size:12px;color:#ff905a;font-weight:600;}
+.mtag.disabled{opacity:0.45;pointer-events:none;}
+.offer-note{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:#535665;margin:-2px 0 10px;line-height:1.4;}
+.offer-note svg{flex-shrink:0;margin-top:1px;}
 .coupsec{background:#fff;margin:10px 0;}
 .couplab{padding:12px 14px;font-size:11px;font-weight:700;color:#535665;letter-spacing:0.5px;background:#f8f8f8;border-bottom:1px solid #f0f0f0;}
 .couprow{padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
@@ -53,6 +56,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .bbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;z-index:100;}
 .binfo{padding:8px 14px;font-size:12px;font-weight:600;color:#282c3f;background:#f8f8f8;text-align:center;}
 .porder{width:100%;padding:16px;background:#ff3f6c;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.5px;}
+.sim-section{background:#fff;margin:10px 0;padding:14px;}
+.sim-title{font-size:15px;font-weight:700;color:#282c3f;margin-bottom:14px;}
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.sim-card{text-decoration:none;display:block;}
+.sim-imgwrap{width:100%;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#f4f4f4;}
+.sim-imgwrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.sim-brand{font-size:13px;font-weight:700;color:#282c3f;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-name{font-size:11px;color:#535665;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-price{margin-top:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.sim-disc{font-size:13px;font-weight:700;color:#282c3f;}
+.sim-orig{font-size:11px;color:#94969f;text-decoration:line-through;}
+.sim-off{font-size:11px;color:#ff905a;font-weight:600;}
 </style>
 </head>
 <body>
@@ -60,7 +75,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   <div class="hl"><a class="back" href="item">&#8592;</a><h2>SHOPPING BAG</h2></div>
   <span class="step">STEP 1/3</span>
 </div>
-<div class="dbar"><span>Check delivery time &amp; services</span><a href="#">ENTER PIN CODE</a></div>
 <div class="section">
   <div class="items-hdr">
     <div class="items-sel">
@@ -82,8 +96,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
       <div class="pname" id="pName"></div>
       <div class="pseller" id="pSeller">Sold by: </div>
       <div class="pmeta">
-        <div class="mtag">Size: Onesize &#9660;</div>
-        <div class="mtag">Qty: 1 &#9660;</div>
+        <div class="mtag disabled">Size: Onesize</div>
+        <div class="mtag disabled">Qty: 1</div>
+      </div>
+      <div class="offer-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff3f6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Only 1 unit can be added, as this item is on a special offer.
       </div>
       <div class="prow">
         <span class="pprice" id="pPrice"></span>
@@ -91,19 +109,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
         <span class="psave" id="pSave"></span>
       </div>
     </div>
-  </div>
-</div>
-<div class="coupsec">
-  <div class="couplab">COUPONS</div>
-  <div class="couprow" style="opacity:0.4;pointer-events:none;">
-    <div class="coupl">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#282c3f" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-      Apply Coupon
-    </div>
-    <span style="font-size:18px;color:#535665;">&#8250;</span>
-  </div>
-  <div style="padding:0 14px 12px;font-size:12px;color:#ff3f6c;">
-    &#9432; Coupons cannot be applied for this item
   </div>
 </div>
 <div class="psec">
@@ -131,6 +136,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     </div>
   </div>
   <div class="terms">By placing the order, you agree to Myntra's <span>Terms of Use</span> and <span>Privacy Policy</span></div>
+</div>
+<div class="sim-section" id="simSection">
+  <div class="sim-title">Similar Products</div>
+  <div class="sim-grid" id="simGrid"></div>
 </div>
 <div class="bbar">
   <div class="binfo">1 Item selected for order</div>
@@ -167,6 +176,31 @@ function removeItem() {
     window.location.href = "watches-offer";
   }
 }
+
+// ── Similar Products (4 random from our catalogue) ──
+(function(){
+  const all  = JSON.parse(localStorage.getItem("products") || "[]");
+  const grid = document.getElementById("simGrid");
+  const sec  = document.getElementById("simSection");
+  if (!grid || all.length < 2) { if (sec) sec.style.display = "none"; return; }
+  let curName = null;
+  try { if (typeof pro !== "undefined" && pro) curName = pro.T_shirt_name; } catch(e){}
+  const pool  = all.filter(p => p.T_shirt_name !== curName);
+  const picks = pool.sort(() => Math.random() - 0.5).slice(0, 4);
+  picks.forEach(p => {
+    const price = Math.ceil(p.oldprice * (100 - p.discount) / 100);
+    const a = document.createElement("a");
+    a.className = "sim-card";
+    a.href = "item";
+    a.onclick = () => localStorage.setItem("clickedProduct", JSON.stringify(p));
+    a.innerHTML =
+      '<div class="sim-imgwrap"><img src="' + p.img + '" alt="' + p.brand_name + '" loading="lazy"/></div>' +
+      '<div class="sim-brand">' + p.brand_name + '</div>' +
+      '<div class="sim-name">' + p.T_shirt_name + '</div>' +
+      '<div class="sim-price"><span class="sim-disc">₹' + price + '</span><span class="sim-orig">₹' + p.oldprice + '</span><span class="sim-off">' + p.discount + '% OFF</span></div>';
+    grid.appendChild(a);
+  });
+})();
 </script>
 </body>
 </html>

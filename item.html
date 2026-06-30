@@ -78,6 +78,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .spec-row{display:flex;padding:8px 0;border-bottom:1px solid #f8f8f8;}
 .spec-key{font-size:13px;color:#535665;width:45%;}
 .spec-val{font-size:13px;color:#282c3f;font-weight:500;}
+
+.sim-section{background:#fff;margin:10px 0;padding:14px;}
+.sim-title{font-size:15px;font-weight:700;color:#282c3f;margin-bottom:14px;}
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.sim-card{text-decoration:none;display:block;}
+.sim-imgwrap{width:100%;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#f4f4f4;}
+.sim-imgwrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.sim-brand{font-size:13px;font-weight:700;color:#282c3f;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-name{font-size:11px;color:#535665;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sim-price{margin-top:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.sim-disc{font-size:13px;font-weight:700;color:#282c3f;}
+.sim-orig{font-size:11px;color:#94969f;text-decoration:line-through;}
+.sim-off{font-size:11px;color:#ff905a;font-weight:600;}
 </style>
 </head>
 <body>
@@ -184,6 +197,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   <div id="specsContainer"></div>
 </div>
 
+<div class="sim-section" id="simSection">
+  <div class="sim-title">Similar Products</div>
+  <div class="sim-grid" id="simGrid"></div>
+</div>
+
 <script>
 let pro = JSON.parse(localStorage.getItem("clickedProduct"));
 if (!pro) window.location.href = "watches-offer";
@@ -270,6 +288,31 @@ function buyNow() {
   localStorage.setItem("isBuyNow", "true");
   window.location.href = "address";
 }
+
+// ── Similar Products (4 random from our catalogue) ──
+(function(){
+  const all  = JSON.parse(localStorage.getItem("products") || "[]");
+  const grid = document.getElementById("simGrid");
+  const sec  = document.getElementById("simSection");
+  if (!grid || all.length < 2) { if (sec) sec.style.display = "none"; return; }
+  let curName = null;
+  try { if (typeof pro !== "undefined" && pro) curName = pro.T_shirt_name; } catch(e){}
+  const pool  = all.filter(p => p.T_shirt_name !== curName);
+  const picks = pool.sort(() => Math.random() - 0.5).slice(0, 4);
+  picks.forEach(p => {
+    const price = Math.ceil(p.oldprice * (100 - p.discount) / 100);
+    const a = document.createElement("a");
+    a.className = "sim-card";
+    a.href = "item";
+    a.onclick = () => localStorage.setItem("clickedProduct", JSON.stringify(p));
+    a.innerHTML =
+      '<div class="sim-imgwrap"><img src="' + p.img + '" alt="' + p.brand_name + '" loading="lazy"/></div>' +
+      '<div class="sim-brand">' + p.brand_name + '</div>' +
+      '<div class="sim-name">' + p.T_shirt_name + '</div>' +
+      '<div class="sim-price"><span class="sim-disc">₹' + price + '</span><span class="sim-orig">₹' + p.oldprice + '</span><span class="sim-off">' + p.discount + '% OFF</span></div>';
+    grid.appendChild(a);
+  });
+})();
 </script>
 </body>
 </html>
