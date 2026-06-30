@@ -189,11 +189,11 @@ render(allP);
 
 // ── Auto-rotating ad banner (changes every 1s) ──
 const adImages = [
-  "https://i.postimg.cc/HL6bP3Cg/Untitled-1.png",
-  "https://i.postimg.cc/MG91rt8k/Untitled-2.png",
-  "https://i.postimg.cc/KY0tsQyS/Untitled-3.png",
-  "https://i.postimg.cc/q712ZQdH/Untitled-4.png",
-  "https://i.postimg.cc/R0gwbGz9/Untitled-5.png"
+  "https://i.postimg.cc/T3P92MbG/Untitled-1.png",
+  "https://i.postimg.cc/x1dRjDmV/Untitled-2.png",
+  "https://i.postimg.cc/vHhhdH4Z/Untitled-3.png",
+  "https://i.postimg.cc/bNggjNZv/Untitled-4.png",
+  "https://i.postimg.cc/MpGDZ2Bv/Untitled-5.png"
 ];
 adImages.forEach(s => { const im = new Image(); im.src = s; });  // preload to avoid flicker
 let adIdx = 0;
@@ -201,7 +201,7 @@ const adImgEl = document.getElementById("adImg");
 setInterval(() => {
   adIdx = (adIdx + 1) % adImages.length;
   adImgEl.src = adImages[adIdx];
-}, 1500);
+}, 1750);
 </script>
 </body>
 </html>
