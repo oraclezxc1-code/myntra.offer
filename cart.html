@@ -58,8 +58,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .porder{width:100%;padding:16px;background:#ff3f6c;color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.5px;}
 .sim-section{background:#fff;margin:10px 0;padding:14px;}
 .sim-title{font-size:15px;font-weight:700;color:#282c3f;margin-bottom:14px;}
-.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-.sim-card{text-decoration:none;display:block;}
+.sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.sim-card{text-decoration:none;display:block;min-width:0;overflow:hidden;}
 .sim-imgwrap{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#f4f4f4;}
 .sim-imgwrap img{width:100%;height:100%;object-fit:cover;display:block;}
 .sim-brand{font-size:13px;font-weight:700;color:#282c3f;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
