@@ -76,9 +76,9 @@ products = [
     {
         brand_name: "Apple",
         seller: "Apple inc.",
-        img: "https://rukminim2.flixcart.com/image/1366/1366/xif0q/smartwatch/l/b/w/-original-imahftghswhvkgff.jpeg?q=90",
+        img: "https://rukminim2.flixcart.com/image/1366/1366/xif0q/smartwatch/l/b/w/-original-imahftghswhvkgff.jpeg",
         imgs: [
-            "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/2/j/o/-original-imahftghtu9pe3zx.jpeg?q=90",
+            "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/2/j/o/-original-imahftghtu9pe3zx.jpeg",
             "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/d/3/m/-original-imahftghmcyjmaze.jpeg?q=90",
             "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/k/z/t/-original-imahftghwpab7hpy.jpeg?q=90",
             "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/v/l/i/-original-imahftgh29ffrufg.jpeg?q=90",
