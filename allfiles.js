@@ -75,7 +75,7 @@ products = [
     },
     {
         brand_name: "Apple",
-        seller: "Apple inc.",
+        seller: "Apple",
         img: "https://rukminim2.flixcart.com/image/1366/1366/xif0q/smartwatch/l/b/w/-original-imahftghswhvkgff.jpeg",
         imgs: [
             "https://rukminim1.flixcart.com/image/1366/1366/xif0q/smartwatch/2/j/o/-original-imahftghtu9pe3zx.jpeg",
@@ -614,7 +614,7 @@ products = [
     },
     {
         brand_name: "Apple",
-        seller: "Apple inc",
+        seller: "Apple",
         img: "https://m.media-amazon.com/images/I/71roT3lDUvL._SL1500_.jpg",
         imgs: [
             "https://m.media-amazon.com/images/I/71nKlZv0BML._SL1500_.jpg",
