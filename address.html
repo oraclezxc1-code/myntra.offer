@@ -264,9 +264,8 @@ function saveAddress() {
     else { list.push(data); selectedIdx = list.length - 1; setList(list); }
   }
   localStorage.setItem("savedAddress", JSON.stringify(data));
-  // Return to the select list so the user can review & confirm
-  if (getList().length) showSelect();
-  else window.location.href = "payment";
+  // A freshly added/edited address is used right away — go straight to payment
+  window.location.href = "payment";
 }
 
 // Auto-fill City & State from the PIN code (India Post public API)
@@ -284,8 +283,14 @@ document.getElementById("pincode").addEventListener("input", async function () {
   } catch (e) { /* offline / invalid PIN — leave fields for manual entry */ }
 });
 
-// Initial view: saved addresses → select list, else → blank form
-if (getList().length) showSelect();
+// Initial view:
+//  - "Change Address" from payment (#select) → show the saved-address list
+//  - already have a chosen address → skip straight to payment (no re-entry)
+//  - otherwise → blank form to add the first address
+const current = JSON.parse(localStorage.getItem("savedAddress") || "{}");
+if (location.hash === "#select" && getList().length) showSelect();
+else if (current && current.name) window.location.href = "payment";
+else if (getList().length) showSelect();
 else showForm(-1);
 </script>
 </body>
